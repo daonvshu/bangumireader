@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>log.ico</file>
+        <file>materialdesignicons-webfont.ttf</file>
+    </qresource>
+</RCC>

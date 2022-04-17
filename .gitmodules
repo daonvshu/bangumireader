@@ -1,0 +1,18 @@
+[submodule "3rdparty/qfonticon"]
+	path = 3rdparty/qfonticon
+	url = git@github.com:dridk/QFontIcon.git
+[submodule "3rdparty/qtwidgetex"]
+	path = 3rdparty/qtwidgetex
+	url = git@github.com:daonvshu/QtWidgetEx.git
+[submodule "3rdparty/shadowwidget"]
+	path = 3rdparty/shadowwidget
+	url = git@github.com:daonvshu/ShadowWidget.git
+[submodule "3rdparty/qrouter"]
+	path = 3rdparty/qrouter
+	url = git@github.com:daonvshu/qrouter.git
+[submodule "3rdparty/qtnetworkservice"]
+	path = 3rdparty/qtnetworkservice
+	url = git@github.com:aeagean/QtNetworkService.git
+[submodule "3rdparty/smoothscrollbar"]
+	path = 3rdparty/smoothscrollbar
+	url = git@github.com:daonvshu/SmoothScrollbar.git

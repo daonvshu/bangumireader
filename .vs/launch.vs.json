@@ -1,0 +1,18 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "mikanbangumireader.exe",
+      "name": "mikanbangumireader.exe",
+      "environment": [
+        {
+          "name": "PATH",
+          "value": "D:\\Qt\\Qt5.14.2\\5.14.2\\msvc2017_64\\bin;${ProjectDir}/openssl"
+        }
+      ]
+    }
+  ]
+}
