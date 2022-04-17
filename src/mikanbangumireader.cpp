@@ -1,5 +1,6 @@
 ﻿#include "mikanbangumireader.h"
 
+#include <qlistview.h>
 #include <qmenu.h>
 #include <qsystemtrayicon.h>
 
@@ -13,6 +14,7 @@ MikanBangumiReader::MikanBangumiReader(QWidget* parent)
     setDraggableTitleHeight(36);
 
     ui.qprogress_wait->setVisible(false);
+    ui.label_close->text = QChar(0xF0157);
 
     auto systemTray = new QSystemTrayIcon(QIcon(":/log.ico"), this);
     systemTray->show();
@@ -37,7 +39,10 @@ void MikanBangumiReader::initSelector() const {
     ui.year_selector->curText = QString::number(nowYear);
 
     ui.year_selector->curTextChangeEvt.add(this, &MikanBangumiReader::selectorChanged);
+    ui.year_selector->setView(new QListView);
+
     ui.season_selector->curTextChangeEvt.add(this, &MikanBangumiReader::selectorChanged);
+    ui.season_selector->setView(new QListView);
 }
 
 void MikanBangumiReader::selectorChanged() const {

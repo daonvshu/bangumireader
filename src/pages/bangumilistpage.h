@@ -1,21 +1,11 @@
 #pragma once
 
 #include "abstractrouterwidget.h"
+
 #include "ui_bangumilistpage.h"
 
-struct BangumiData {
-    QString thumbnail;
-    QString title;
-    QString link;
 
-    QString toString() const {
-        return QString("[title:%1, thumbnail:%2, link:%3]")
-            .arg(title)
-            .arg(thumbnail)
-            .arg(link);
-    }
-};
-
+struct BangumiData;
 class BangumiListPage : public AbstractRouterWidget
 {
     Q_OBJECT

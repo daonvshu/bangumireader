@@ -3,4 +3,7 @@
         <file>log.ico</file>
         <file>materialdesignicons-webfont.ttf</file>
     </qresource>
+    <qresource prefix="/icon">
+        <file>resource/arrow-down.png</file>
+    </qresource>
 </RCC>

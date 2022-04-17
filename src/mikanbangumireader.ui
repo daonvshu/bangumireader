@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1180</width>
-    <height>780</height>
+    <width>1300</width>
+    <height>860</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,18 +15,76 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#MikanBangumiReader{
-background:#FFFBFB;
-border-radius:6px;
+	background:#FFEDDB;
+	border-radius:6px;
+}
+QComboBox{
+	background:#EDCDBB;
+	border:none;
+	border-radius:3px;
+	color:#BF9270;
+	padding-left:12px;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(:/icon/resource/arrow-down.png);
+}
+
+QComboBox QAbstractItemView {
+    border: none;
+    selection-background-color: #FFEDDB;
+	background:#EDCDBB;
+	color:#BF9270;
+	height:24px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>24</number>
+   </property>
+   <property name="topMargin">
+    <number>18</number>
+   </property>
+   <property name="rightMargin">
+    <number>24</number>
+   </property>
+   <property name="bottomMargin">
+    <number>18</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>12</number>
+     </property>
      <item>
-      <widget class="QComboBoxEx" name="year_selector"/>
+      <widget class="QComboBoxEx" name="year_selector">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>24</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QComboBoxEx" name="season_selector">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>24</height>
+        </size>
+       </property>
        <item>
         <property name="text">
          <string>秋</string>
@@ -61,6 +119,23 @@ border-radius:6px;
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QLabelEx" name="label_close">
+       <property name="minimumSize">
+        <size>
+         <width>24</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-family:&quot;Material Design Icons&quot;;
+color:#BF9270;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -104,6 +179,11 @@ border-bottom:1px solid #EDCDBB;</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QLabelEx</class>
+   <extends>QLabel</extends>
+   <header>qlabelex.h</header>
+  </customwidget>
+  <customwidget>
    <class>QProgressBarEx</class>
    <extends>QProgressBar</extends>
    <header>qprogressbarex.h</header>
@@ -114,6 +194,8 @@ border-bottom:1px solid #EDCDBB;</string>
    <header>qcomboboxex.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

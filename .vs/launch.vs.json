@@ -5,8 +5,8 @@
     {
       "type": "default",
       "project": "CMakeLists.txt",
-      "projectTarget": "mikanbangumireader.exe",
-      "name": "mikanbangumireader.exe",
+      "projectTarget": "mikanbangumireader.exe (src\\mikanbangumireader.exe)",
+      "name": "mikanbangumireader.exe (src\\mikanbangumireader.exe)",
       "environment": [
         {
           "name": "PATH",
