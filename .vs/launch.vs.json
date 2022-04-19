@@ -10,7 +10,7 @@
       "environment": [
         {
           "name": "PATH",
-          "value": "D:\\Qt\\Qt5.14.2\\5.14.2\\msvc2017_64\\bin;${ProjectDir}/openssl"
+          "value": "H:\\Qt\\5.15.2\\msvc2019_64\\bin;${ProjectDir}/openssl"
         }
       ]
     }

@@ -5,22 +5,11 @@
 
 #include <qxmlstream.h>
 #include <qdebug.h>
+#include <qlistview.h>
 #include <qscroller.h>
+#include <qstandarditemmodel.h>
 
 #include "ui_bangumilistitem.h"
-
-struct BangumiData {
-    QString thumbnail;
-    QString title;
-    QString link;
-
-    QString toString() const {
-        return QString("[title:%1, thumbnail:%2, link:%3]")
-            .arg(title)
-            .arg(thumbnail)
-            .arg(link);
-    }
-};
 
 class BangumiListItem : public QWidget {
 public:
@@ -81,6 +70,16 @@ void BangumiListPage::requestBangumiData(const QString& year, const QString& sea
         })
     .exec();
 }
+
+struct BangumiData {
+    QString title;
+    QString thumbnail;
+    QString link;
+
+    QString toString() const {
+        return QString("[title:%1, thumbnail:%2, link:%3]").arg(title, thumbnail, link);
+    }
+};
 
 void BangumiListPage::parseHtmlData(const QByteArray& data) {
     QXmlStreamReader reader("<div>" + data + "</div>");
