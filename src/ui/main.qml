@@ -2,6 +2,9 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 
+import "components"
+import "widgets"
+
 Item {
     width: 1280
     height: 768
@@ -15,75 +18,17 @@ Item {
         radius: 9
         color: "#FFEDDB"
 
-        Rectangle {
-            id: header
+        AppHeader {
+            id: header 
+
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 6
-            
-            height: 32
-            color: "transparent"
-
-            Image {
-                id: headerIcon
-                anchors.verticalCenter: parent.verticalCenter
-                sourceSize {
-                    width: 24
-                    height: 24
-                }
-                source: "qrc:/log.ico"
-            }
-
-            Text {
-                anchors.left: headerIcon.right
-                anchors.leftMargin: 8
-                anchors.verticalCenter: parent.verticalCenter
-
-                font.pixelSize: 14
-                font.bold: true
-                color: "#BF9270"
-                text: "BangumiReader"
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                
-                property var clickPos
-        
-                onPressed: {
-                    clickPos = Qt.point(mouse.x, mouse.y)
-                }
-        
-                onPositionChanged: {
-                    var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y)
-                    mainWindow.setX(mainWindow.x + delta.x)
-                    mainWindow.setY(mainWindow.y + delta.y)
-                }
-            }
-
-            Text {
-                anchors.right: parent.right
-                anchors.rightMargin: 8
-
-                font.family: "Material Design Icons"
-                font.pixelSize: 30
-                text: "\uf06C9"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: mainWindow.hide()
-                }
-            }
         }
 
-        Rectangle {
+        AnchorHLine {
             anchors.top: header.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: 1
-
-            color: "#EDCDBB"
         }
     }
 

@@ -16,10 +16,6 @@ int main(int argc, char* argv[]) {
 
     a.setFont(QFont("Microsoft YaHei UI"));
 
-    //Material Design Icons
-    int id = QFontDatabase::addApplicationFont(":/materialdesignicons-webfont.ttf");
-    qDebug() << QFontDatabase::applicationFontFamilies(id).first();
-
     QQuickView view;
 #ifdef QT_DEBUG
     const QDir workDir(PROJECT_UI_PATH);
