@@ -11,10 +11,14 @@
 
 #include "../3rdparty/qtmintools/filewatcher/filewatcher.h"
 
+#include "models/bangumilistmodel.h"
+
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
 
     a.setFont(QFont("Microsoft YaHei UI"));
+
+    qmlRegisterType<BangumiListModel>("BangumiListModel", 0, 1, "BangumiListModel");
 
     QQuickView view;
 #ifdef QT_DEBUG

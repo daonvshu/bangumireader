@@ -4,6 +4,7 @@ import QtGraphicalEffects 1.15
 
 import "components"
 import "widgets"
+import "subpages"
 
 Item {
     width: 1280
@@ -16,7 +17,7 @@ Item {
         anchors.margins: 6
 
         radius: 9
-        color: "#FFEDDB"
+        color: "#FEF7DC"
 
         AppHeader {
             id: header 
@@ -29,6 +30,25 @@ Item {
 
         AnchorHLine {
             anchors.top: header.bottom
+        }
+
+        StackView {
+            id: stackview
+            initialItem: bangumipage
+
+            anchors {
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+                top: header.bottom
+                margins: 16
+            }
+        }
+
+        Component {
+            id: bangumipage
+
+            BangumiListPage {}
         }
     }
 

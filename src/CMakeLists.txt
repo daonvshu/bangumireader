@@ -21,6 +21,9 @@ add_executable (${PROJECT_NAME} WIN32
     main.cpp    
     resource.qrc
 
+    models/bangumilistmodel.h
+    models/bangumilistmodel.cpp
+
     ${filewatcher}/filewatcher.h
     ${filewatcher}/filewatcher.cpp
 
