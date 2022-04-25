@@ -16,6 +16,8 @@ ListView {
         property var innerData: type == 0 ? header : contentData
     }
 
+    signal clickedBangumi(string title, string link)
+
     Component {
         id: delegateHeader
 
@@ -89,6 +91,8 @@ ListView {
                             sourceSize.width: width * 2
                             sourceSize.height: height * 2
                             smooth: true
+
+                            opacity: modelData.link.length !== 0 ? 1.0 : 0.3
     
                             layer.enabled: true
                             layer.smooth: true
@@ -110,6 +114,16 @@ ListView {
                             font.pixelSize: 14
                             font.bold: true
                             elide: Text.ElideMiddle
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            var linkStr = modelData.link
+                            if (linkStr.length !== 0) {
+                                clickedBangumi(modelData.title, modelData.link)
+                            }
                         }
                     }
                 }

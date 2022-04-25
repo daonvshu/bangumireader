@@ -13,6 +13,8 @@ Rectangle {
 
     BangumiListModel{ id: bangumiListModel }
 
+    signal clickedItemBangumi(string title, string link)
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 12
@@ -93,6 +95,8 @@ Rectangle {
                 anchors.margins: 12
 
                 model: bangumiListModel
+
+                onClickedBangumi: clickedItemBangumi(title, link)
             }
         }
     }

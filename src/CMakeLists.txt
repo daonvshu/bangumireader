@@ -24,6 +24,12 @@ add_executable (${PROJECT_NAME} WIN32
     models/bangumilistmodel.h
     models/bangumilistmodel.cpp
 
+    models/sourcelinkmodel.h
+    models/sourcelinkmodel.cpp
+
+    utils/mikanrssreader.h
+    utils/mikanrssreader.cpp
+
     ${filewatcher}/filewatcher.h
     ${filewatcher}/filewatcher.cpp
 

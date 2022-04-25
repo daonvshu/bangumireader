@@ -12,6 +12,7 @@
 #include "../3rdparty/qtmintools/filewatcher/filewatcher.h"
 
 #include "models/bangumilistmodel.h"
+#include "models/sourcelinkmodel.h"
 
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
@@ -19,6 +20,7 @@ int main(int argc, char* argv[]) {
     a.setFont(QFont("Microsoft YaHei UI"));
 
     qmlRegisterType<BangumiListModel>("BangumiListModel", 0, 1, "BangumiListModel");
+    qmlRegisterType<SourceLinkModel>("SourceLinkModel", 0, 1, "SourceLinkModel");
 
     QQuickView view;
 #ifdef QT_DEBUG

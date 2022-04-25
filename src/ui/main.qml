@@ -35,6 +35,7 @@ Item {
         StackView {
             id: stackview
             initialItem: bangumipage
+            clip: true
 
             anchors {
                 left: parent.left
@@ -48,7 +49,22 @@ Item {
         Component {
             id: bangumipage
 
-            BangumiListPage {}
+            BangumiListPage {
+                onClickedItemBangumi: {
+                    stackview.push(sourcelinkpage, {
+                        "loadTargetBangumiId": parseInt(link.substring(link.lastIndexOf("/") + 1)),
+                        "title": title
+                    })
+                }
+            }
+        }
+
+        Component {
+            id: sourcelinkpage
+
+            SourceLinkPage {
+                onBackPage: stackview.pop()
+            }
         }
     }
 
