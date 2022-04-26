@@ -42,6 +42,8 @@ add_executable (${PROJECT_NAME} WIN32
 
     databasemodels/settingtbmodel.h
     databasemodels/settingtbmodel.cpp
+    databasemodels/remarktbmodel.h
+    databasemodels/remarktbmodel.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

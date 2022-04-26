@@ -185,6 +185,7 @@ Rectangle {
                             width: 16
                             height: 16
                             source: "../../resource/ic_down.png"
+                            opacity: downloaded ? 0.3 : 1
 
                             onClicked: {
                                 download = true

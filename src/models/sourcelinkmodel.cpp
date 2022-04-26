@@ -8,10 +8,15 @@
 #include <QtConcurrent/QtConcurrent>
 
 #include "databasemodels/settingtbmodel.h"
+#include "databasemodels/remarktbmodel.h"
 
 SourceLinkModel::SourceLinkModel(QObject *parent)
     : QAbstractListModel(parent)
 {
+    connect(this, &SourceLinkModel::requestRefreshList, this, [&] {
+        beginResetModel();
+        endResetModel();
+    });
 }
 
 void SourceLinkModel::setBangumiId(int id) {
@@ -48,6 +53,9 @@ QVariant SourceLinkModel::data(const QModelIndex& index, int role) const {
     if (role == Qt::UserRole + 1) {
         return checkStatus[index.row()];
     }
+    if (role == Qt::UserRole + 3) {
+        return RemarkTbModel::checkLinkExist(filterData.at(index.row()).downloadUrl);
+    }
     return QVariant();
 }
 
@@ -68,6 +76,7 @@ QHash<int, QByteArray> SourceLinkModel::roleNames() const {
         {Qt::UserRole + 1, "rowChecked"},
         {Qt::UserRole + 2, "download"},
         {Qt::DisplayRole, "display"},
+        {Qt::UserRole + 3, "downloaded"},
     };
 }
 
@@ -186,8 +195,9 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
                 .onDownloadFileFailed([=](QString error) {
                 qDebug() << "download:" << link << "fail!" << error;
             })
-                .onFinished([&] {
+                .onFinished([&, link] {
                 count--;
+                RemarkTbModel::cacheNewDownloadedLink(link);
                 downloadNext();
             })
                 .exec();
@@ -208,6 +218,7 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
         qDebug() << "download links task finished!";
         downloading = false;
         emit downloadStatusChanged();
+        emit requestRefreshList();
     });
 }
 

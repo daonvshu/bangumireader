@@ -56,6 +56,7 @@ public:
 signals:
     void groupNamesChanged();
     void downloadStatusChanged();
+    void requestRefreshList();
 
 private:
     int bangumiId = -1;
