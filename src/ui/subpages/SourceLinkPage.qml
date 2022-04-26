@@ -15,6 +15,11 @@ Rectangle {
 
     signal backPage
 
+    MouseArea {
+        anchors.fill: parent
+        onClicked: focus = true
+    }
+
     SourceLinkModel{
         id: sourceLinkModel
         bangumiId: loadTargetBangumiId
@@ -195,9 +200,52 @@ Rectangle {
             }
         }
 
-        Row {
-            Layout.alignment: Qt.AlignRight
+        RowLayout {
             spacing: 12
+
+            IconBtn2 {
+                text: "全选"
+                enabled: !sourceLinkModel.downloading
+                icon.source: "../../resource/ic_tick.png"
+                onClicked: sourceLinkModel.selectAllItems()
+            }
+
+            Item {
+                width: 8
+            }
+
+            Text {
+                id: contentText
+                Layout.alignment: Qt.AlignVCenter
+
+                text: "筛选："
+                font.pixelSize: 14
+                color: "#383838"
+            }
+
+            Rectangle {
+                height: 36
+                width: 200
+
+                color: "#EDCDBB"
+                radius: 8
+
+                TextInput {
+                    anchors.fill: parent
+                    anchors.leftMargin: 12
+                    anchors.rightMargin: 12
+
+                    verticalAlignment: Qt.AlignVCenter
+                    text: sourceLinkModel.filterKeywords
+                    clip: true
+
+                    onTextChanged: sourceLinkModel.filterKeywords = text
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
 
             IconBtn2 {
                 text: "下载选中"

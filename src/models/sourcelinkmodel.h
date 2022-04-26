@@ -12,6 +12,7 @@ class SourceLinkModel : public QAbstractListModel
     Q_PROPERTY(QString groupName READ getGroupName WRITE setGroupName)
     Q_PROPERTY(QStringList groupNames READ getGroupNames NOTIFY groupNamesChanged)
     Q_PROPERTY(bool downloading READ getDownloadingStatus NOTIFY downloadStatusChanged)
+    Q_PROPERTY(QString filterKeywords READ getFilterKeywords WRITE setFilterKeywords)
 
 public:
     SourceLinkModel(QObject *parent = nullptr);
@@ -42,7 +43,14 @@ public:
         return downloading;
     }
 
+    QString getFilterKeywords() const {
+        return filterKeywords;
+    }
+
+    void setFilterKeywords(const QString& keywords);
+
     Q_INVOKABLE int groupSize(const QString& groupName) const;
+    Q_INVOKABLE void selectAllItems();
     Q_INVOKABLE void downloadSelectedRowLinks();
 
 signals:
@@ -53,12 +61,16 @@ private:
     int bangumiId = -1;
     QString groupName;
     bool downloading = false;
+    QString filterKeywords;
 
     QMap<QString, QList<MikanTorrentLinkData>> linkData;
+    QList<MikanTorrentLinkData> filterData;
     QVector<bool> checkStatus;
 
 private:
     void refreshTorrentLinks();
     void selectDirectory(int dataRow);
     void downloadTargetTorrentLink(const QString& savePath, const QStringList& links);
+    void reloadFilterLinkData();
+    void selectedGroupNameChanged();
 };

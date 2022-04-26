@@ -24,18 +24,24 @@ QStringList SourceLinkModel::getGroupNames() const {
 void SourceLinkModel::setGroupName(const QString& name) {
     beginResetModel();
     groupName = name;
-    checkStatus.resize(linkData[groupName].size());
-    checkStatus.fill(false);
+    selectedGroupNameChanged();
+    endResetModel();
+}
+
+void SourceLinkModel::setFilterKeywords(const QString& keywords) {
+    beginResetModel();
+    this->filterKeywords = keywords;
+    selectedGroupNameChanged();
     endResetModel();
 }
 
 int SourceLinkModel::rowCount(const QModelIndex& parent) const {
-    return linkData[groupName].size();
+    return filterData.size();
 }
 
 QVariant SourceLinkModel::data(const QModelIndex& index, int role) const {
     if (role == Qt::DisplayRole) {
-        return QVariant::fromValue(linkData[groupName].at(index.row()));
+        return QVariant::fromValue(filterData.at(index.row()));
     }
     if (role == Qt::UserRole + 1) {
         return checkStatus[index.row()];
@@ -63,15 +69,11 @@ QHash<int, QByteArray> SourceLinkModel::roleNames() const {
     };
 }
 
-int SourceLinkModel::groupSize(const QString& groupName) const {
-    return linkData[groupName].size();
-}
-
 void SourceLinkModel::downloadSelectedRowLinks() {
     QStringList links;
     for (int i = 0; i < checkStatus.size(); i++) {
         if (checkStatus[i]) {
-            links << linkData[groupName][i].downloadUrl;
+            links << filterData[i].downloadUrl;
         }
     }
     if (links.isEmpty()) return;
@@ -91,13 +93,13 @@ void SourceLinkModel::refreshTorrentLinks() {
     reader->readRssContent(bangumiId, [&] (const QMap<QString, QList<MikanTorrentLinkData>>& groupData) {
         beginResetModel();
         linkData = groupData;
+        filterData.clear();
         if (linkData.isEmpty()) {
             endResetModel();
             return;
         }
         groupName = linkData.keys().first();
-        checkStatus.resize(linkData[groupName].size());
-        checkStatus.fill(false);
+        selectedGroupNameChanged();
         endResetModel();
         groupNamesChanged();
     });
@@ -106,8 +108,24 @@ void SourceLinkModel::refreshTorrentLinks() {
 void SourceLinkModel::selectDirectory(int dataRow) {
     auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("Ñ¡Ôñ±£´æÂ·¾¶"), ".");
     if (!savePath.isEmpty()) {
-        downloadTargetTorrentLink(savePath, { linkData[groupName][dataRow].downloadUrl });
+        downloadTargetTorrentLink(savePath, { filterData[dataRow].downloadUrl });
     }
+}
+
+int SourceLinkModel::groupSize(const QString& groupName) const {
+    return linkData[groupName].size();
+}
+
+void SourceLinkModel::selectAllItems() {
+    bool allIsChecked = true;
+    for (const auto& check: checkStatus) {
+        allIsChecked = allIsChecked && check;
+    }
+    for (auto& check: checkStatus) {
+        check = !allIsChecked;
+    }
+
+    dataChanged(index(0), index(checkStatus.size() - 1), {Qt::UserRole + 1});
 }
 
 //5 limit parallel download task
@@ -187,4 +205,19 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
         downloading = false;
         emit downloadStatusChanged();
     });
+}
+
+void SourceLinkModel::reloadFilterLinkData() {
+    filterData.clear();
+    for (const auto& d: linkData[groupName]) {
+        if (d.title.contains(filterKeywords)) {
+            filterData << d;
+        }
+    }
+}
+
+void SourceLinkModel::selectedGroupNameChanged() {
+    reloadFilterLinkData();
+    checkStatus.resize(filterData.size());
+    checkStatus.fill(false);
 }

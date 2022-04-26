@@ -7,7 +7,6 @@ Button {
     background: Rectangle {
         id: rectBg
 
-        implicitWidth: 38
         implicitHeight: 38
 
         opacity: enabled ? 1.0 : 0.3
@@ -29,7 +28,7 @@ Button {
 
         Image {
             anchors.verticalCenter: parent.verticalCenter
-            sourceSize.width: control.height * 0.6
+            sourceSize.width: control.height * 0.56
             source: control.icon.source
 
             opacity: enabled ? 1.0 : 0.3
