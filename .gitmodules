@@ -4,3 +4,6 @@
 [submodule "3rdparty/qtmintools"]
 	path = 3rdparty/qtmintools
 	url = git@github.com:daonvshu/qtminitools.git
+[submodule "3rdparty/qtdao"]
+	path = 3rdparty/qtdao
+	url = git@github.com:daonvshu/QtDao.git

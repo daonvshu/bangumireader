@@ -16,6 +16,8 @@ set(filewatcher ${CMAKE_SOURCE_DIR}/3rdparty/qtmintools/filewatcher)
 
 include_directories(${qnetworkservice})
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/entity/entity.cmake)
+
 add_executable (${PROJECT_NAME} WIN32
 
     main.cpp    
@@ -34,6 +36,12 @@ add_executable (${PROJECT_NAME} WIN32
     ${filewatcher}/filewatcher.cpp
 
     ${qnetworkservice}/HttpClient.h
+
+    ${ENTITY_FILE_LIST}
+    entity/sqliteconfig.h
+
+    databasemodels/settingtbmodel.h
+    databasemodels/settingtbmodel.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -42,4 +50,5 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
     Qt5::Quick
     Qt5::Network
+    qtdao::lib
 )

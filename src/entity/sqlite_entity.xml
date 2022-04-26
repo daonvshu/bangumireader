@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dao prefix="ir_" db="sqlite">
+  <tb name="SettingTb" declaremetatype="true">
+    <item name="name" type="text" constraints="unique" note="key"/>
+    <item name="data" type="variant" note="自定义数据类型"/>
+  </tb>
+  <tb name="RemarkTb" declaremetatype="true">
+    <item name="sourceLink" type="text" note="已下载链接" />
+  </tb>
+</dao>

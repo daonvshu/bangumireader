@@ -3,3 +3,4 @@
 project ("mikanbangumireaderproject")
 
 add_subdirectory(src)
+add_subdirectory(3rdparty/qtdao/src)

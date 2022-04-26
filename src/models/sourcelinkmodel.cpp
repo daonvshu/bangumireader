@@ -7,6 +7,8 @@
 #include <qeventloop.h>
 #include <QtConcurrent/QtConcurrent>
 
+#include "databasemodels/settingtbmodel.h"
+
 SourceLinkModel::SourceLinkModel(QObject *parent)
     : QAbstractListModel(parent)
 {
@@ -78,8 +80,9 @@ void SourceLinkModel::downloadSelectedRowLinks() {
     }
     if (links.isEmpty()) return;
 
-    auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("选择保存路径"), ".");
+    auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("选择保存路径"), SettingTbModel::getLastSaveDirectory());
     if (!savePath.isEmpty()) {
+        SettingTbModel::updateSaveDirectory(savePath);
         downloadTargetTorrentLink(savePath, links);
     }
 }
@@ -106,8 +109,9 @@ void SourceLinkModel::refreshTorrentLinks() {
 }
 
 void SourceLinkModel::selectDirectory(int dataRow) {
-    auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("选择保存路径"), ".");
+    auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("选择保存路径"), SettingTbModel::getLastSaveDirectory());
     if (!savePath.isEmpty()) {
+        SettingTbModel::updateSaveDirectory(savePath);
         downloadTargetTorrentLink(savePath, { filterData[dataRow].downloadUrl });
     }
 }
