@@ -8,6 +8,8 @@ Rectangle {
     height: 32
     color: "transparent"
 
+    signal rssClicked
+
     Image {
         id: headerIcon
         anchors.verticalCenter: parent.verticalCenter
@@ -62,5 +64,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
 
         source: "../../resource/ic_rss.png"
+
+        onClicked: rssClicked()
     }
 }

@@ -26,6 +26,8 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 6
+
+            onRssClicked: {}
         }
 
         AnchorHLine {

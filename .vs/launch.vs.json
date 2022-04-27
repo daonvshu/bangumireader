@@ -13,6 +13,18 @@
           "value": "H:\\Qt\\5.15.2\\msvc2019_64\\bin;${ProjectDir}/openssl"
         }
       ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "test.exe (test\\test.exe)",
+      "name": "test.exe (test\\test.exe)",
+      "environment": [
+        {
+          "name": "PATH",
+          "value": "H:\\Qt\\5.15.2\\msvc2019_64\\bin;${ProjectDir}/openssl"
+        }
+      ]
     }
   ]
 }

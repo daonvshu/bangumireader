@@ -12,7 +12,7 @@ class SourceLinkModel : public QAbstractListModel
     Q_PROPERTY(QString groupName READ getGroupName WRITE setGroupName)
     Q_PROPERTY(QStringList groupNames READ getGroupNames NOTIFY groupNamesChanged)
     Q_PROPERTY(bool downloading READ getDownloadingStatus NOTIFY downloadStatusChanged)
-    Q_PROPERTY(QString filterKeywords READ getFilterKeywords WRITE setFilterKeywords)
+    Q_PROPERTY(QString filterKeywords READ getFilterKeywords WRITE setFilterKeywords NOTIFY filterKeywordsChanged)
 
 public:
     SourceLinkModel(QObject *parent = nullptr);
@@ -57,6 +57,7 @@ signals:
     void groupNamesChanged();
     void downloadStatusChanged();
     void requestRefreshList();
+    void filterKeywordsChanged();
 
 private:
     int bangumiId = -1;

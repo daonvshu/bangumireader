@@ -10,6 +10,8 @@
 #include "databasemodels/settingtbmodel.h"
 #include "databasemodels/remarktbmodel.h"
 
+#include "utils/textutil.h"
+
 SourceLinkModel::SourceLinkModel(QObject *parent)
     : QAbstractListModel(parent)
 {
@@ -224,10 +226,13 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
 
 void SourceLinkModel::reloadFilterLinkData() {
     filterData.clear();
-    for (const auto& d: linkData[groupName]) {
-        if (d.title.contains(filterKeywords)) {
-            filterData << d;
-        }
+
+    try {
+        filterData = TextUtils::filterByKeywords<MikanTorrentLinkData>(filterKeywords, linkData[groupName], [&](const MikanTorrentLinkData& d) {
+            return d.title;
+        });
+    } catch (TextParseException&) {
+        filterData << linkData[groupName];
     }
 }
 

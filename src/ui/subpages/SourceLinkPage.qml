@@ -5,6 +5,7 @@ import Qt.labs.platform 1.1
 
 import SourceLinkModel 0.1
 import "../widgets"
+import "../dialog"
 
 Rectangle {
 
@@ -224,24 +225,23 @@ Rectangle {
                 color: "#383838"
             }
 
-            Rectangle {
-                height: 36
-                width: 200
+            TextField {
+                verticalAlignment: Qt.AlignVCenter
+                clip: true
+                
+                text: sourceLinkModel.filterKeywords
+                onTextChanged: sourceLinkModel.filterKeywords = text
 
-                color: "#EDCDBB"
-                radius: 8
-
-                TextInput {
-                    anchors.fill: parent
-                    anchors.leftMargin: 12
-                    anchors.rightMargin: 12
-
-                    verticalAlignment: Qt.AlignVCenter
-                    text: sourceLinkModel.filterKeywords
-                    clip: true
-
-                    onTextChanged: sourceLinkModel.filterKeywords = text
+                background: Rectangle {
+                    implicitWidth: 200
+                    implicitHeight: 36
+                    color: "#EDCDBB"
+                    radius: 8
                 }
+            }
+
+            KeywordNotice {
+                verticalAlignment: Qt.AlignVCenter
             }
 
             Item {
@@ -258,7 +258,12 @@ Rectangle {
             IconBtn2 {
                 text: "订阅字幕组"
                 icon.source: "../../resource/ic_rss.png"
+                onClicked: subscribeDialog.open()
             }
         }
+    }
+
+    SubscribeDialog {
+        id: subscribeDialog
     }
 }
