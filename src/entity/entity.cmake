@@ -9,4 +9,7 @@ set(ENTITY_FILE_LIST
 
     ${CMAKE_CURRENT_LIST_DIR}/SettingTb.h
     ${CMAKE_CURRENT_LIST_DIR}/RemarkTb.h
+    ${CMAKE_CURRENT_LIST_DIR}/SubscribeTb.h
+    ${CMAKE_CURRENT_LIST_DIR}/SubscribeGroups.h
+    ${CMAKE_CURRENT_LIST_DIR}/SubscribeGroupItem.h
 )

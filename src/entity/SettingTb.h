@@ -9,13 +9,19 @@
 #include "condition/EntityField.h"
 
 class SettingTb {
+    Q_GADGET
+
+    Q_PROPERTY(QString name MEMBER name)
+    Q_PROPERTY(QVariant data MEMBER data)
+    Q_PROPERTY(QVariantMap extra MEMBER __extra)
+
 private:
     //key
     QString name;
     //自定义数据类型
     QVariant data;
 
-    QHash<QString, QVariant> __extra;
+    QVariantMap __extra;
 
 public:
 

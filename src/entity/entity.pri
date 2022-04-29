@@ -5,5 +5,8 @@
 
 HEADERS += ./SettingTb.h \
     ./RemarkTb.h \
+    ./SubscribeTb.h \
+    ./SubscribeGroups.h \
+    ./SubscribeGroupItem.h \
     ./SqliteEntityInclude.h
 SOURCES += ./SqliteEntityInclude.cpp

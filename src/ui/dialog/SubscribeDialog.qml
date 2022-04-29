@@ -6,7 +6,7 @@ import "../widgets"
 
 Dialog {
     id: root
-    width: 420
+    width: 480
     height: 300
 
     x: (mainWindow.width - width) / 2
@@ -15,6 +15,12 @@ Dialog {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+    property var subscribeData
+    property var bangumiTitle: ""
+
+    signal saved(string keywords)
+    signal cancelSubscribe()
 
     background: Rectangle {
         color: "#FEF7DC"
@@ -82,7 +88,7 @@ Dialog {
 
             Text {
                 Layout.fillWidth: true
-                text: "番剧名"
+                text: bangumiTitle
                 font.pixelSize: 16
                 color: "#BF9270"
                 elide: Text.ElideMiddle
@@ -96,7 +102,7 @@ Dialog {
 
             Text {
                 Layout.fillWidth: true
-                text: "字幕组"
+                text: subscribeData.groupName
                 font.pixelSize: 16
                 color: "#BF9270"
                 elide: Text.ElideMiddle
@@ -110,7 +116,7 @@ Dialog {
 
             Text {
                 Layout.fillWidth: true
-                text: "订阅地址"
+                text: subscribeData.extra.rssLink
                 font.pixelSize: 16
                 color: "#BF9270"
                 elide: Text.ElideMiddle
@@ -132,6 +138,7 @@ Dialog {
                     id: keywordsInput
 
                     clip: true
+                    text: subscribeData.keywords
 
                     background: Rectangle {
                         implicitWidth: 200
@@ -166,11 +173,19 @@ Dialog {
             IconBtn2 {
                 text: "保存设置"
                 icon.source: "../../resource/ic_down.png"
+                onClicked: {
+                    saved(keywordsInput.text)
+                    root.close()
+                }
             }
     
             IconBtn2 {
                 text: "取消订阅"
                 icon.source: "../../resource/ic_remove.png"
+                onClicked: {
+                    cancelSubscribe()
+                    root.close()
+                }
             }
         }
     }

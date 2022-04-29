@@ -29,6 +29,8 @@ class MikanRssReader : public QObject
 public:
     MikanRssReader(QObject *parent = nullptr);
 
+    static QString rssLink(int bangumiId);
+
     void readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler);
 
 private:

@@ -7,4 +7,22 @@
   <tb name="RemarkTb" declaremetatype="true">
     <item name="sourceLink" type="text" note="已下载链接" />
   </tb>
+  <tb name="SubscribeTb" declaremetatype="true">
+    <item name="id" type="int" autoincrement="true" default="-1" constraints="primary key"/>
+    <item name="bangumiId" type="int" note="番剧链接id"/>
+    <item name="title" type="text" note="番剧名"/>
+    <item name="rssLink" type="text" note="Rss订阅地址" constraints="not null"/>
+  </tb>
+  <tb name="SubscribeGroups" declaremetatype="true">
+    <item name="id" type="int" autoincrement="true" default="-1" constraints="primary key"/>
+    <item name="bangumiId" type="int" note="番剧链接id"/>
+    <item name="groupName" type="text" note="字幕组"/>
+    <item name="keywords" type="text" note="筛选关键字"/>
+  </tb>
+  <tb name="SubscribeGroupItem" declaremetatype="true">
+    <item name="id" type="int" autoincrement="true" default="-1" constraints="primary key"/>
+    <item name="groupId" type="int" note="字幕组订阅id"/>
+    <item name="sourceLink" type="text" note="字幕组订阅下的种子链接"/>
+    <item name="newItem" type="int" default="1" note="是否是new状态"/>
+  </tb>
 </dao>

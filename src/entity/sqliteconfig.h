@@ -11,7 +11,7 @@ class SqliteConfig : public QObject {
 
 public:
     int getVersion() {
-        return 1;
+        return 2;
     }
 
     QString getSqlType() {

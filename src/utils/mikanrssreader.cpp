@@ -12,9 +12,13 @@ MikanRssReader::MikanRssReader(QObject *parent)
 
 #define BANGUMI_RSS_URL QString("https://mikanani.me/RSS/Bangumi?bangumiId=%1")
 
+QString MikanRssReader::rssLink(int bangumiId) {
+    return BANGUMI_RSS_URL.arg(bangumiId);
+}
+
 void MikanRssReader::readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler) {
     static AeaQt::HttpClient client;
-    client.get(BANGUMI_RSS_URL.arg(bangumiId))
+    client.get(rssLink(bangumiId))
         .onFailed([&](const QByteArray& reason) {
             qDebug() << reason;
     })

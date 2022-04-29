@@ -9,11 +9,16 @@
 #include "condition/EntityField.h"
 
 class RemarkTb {
+    Q_GADGET
+
+    Q_PROPERTY(QString sourceLink MEMBER sourceLink)
+    Q_PROPERTY(QVariantMap extra MEMBER __extra)
+
 private:
     //已下载链接
     QString sourceLink;
 
-    QHash<QString, QVariant> __extra;
+    QVariantMap __extra;
 
 public:
 

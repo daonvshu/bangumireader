@@ -9,6 +9,7 @@ import "../dialog"
 
 Rectangle {
 
+    id: root
     color: "transparent"
 
     property int loadTargetBangumiId: -1
@@ -133,10 +134,27 @@ Rectangle {
                 }
 
                 delegate: Rectangle {
+                    id: itemRow
                     width: bangumiLinkUrlList.width - 8
                     height: 32
+                    radius: 4
 
-                    color: "transparent"
+                    property var isHoverd: false
+
+                    color: isHoverd ? "#FFBC80" : "#E6DDC6"
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: 200
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: isHoverd = true
+                        onExited: isHoverd = false
+                        onClicked: newStatus = false
+                    }
 
                     RowLayout {
                         anchors.fill: parent
@@ -178,6 +196,13 @@ Rectangle {
                             font.pixelSize: 12
                             color: "#BF9270"
                             elide: Text.ElideMiddle
+                        }
+
+                        Image {
+                            Layout.alignment: Qt.AlignVCenter
+
+                            source: "../../resource/ic_new.png"
+                            visible: sourceLinkModel.groupSubscribed && newStatus
                         }
 
                         IconBtn {
@@ -257,13 +282,21 @@ Rectangle {
 
             IconBtn2 {
                 text: "订阅字幕组"
-                icon.source: "../../resource/ic_rss.png"
-                onClicked: subscribeDialog.open()
+                icon.source: sourceLinkModel.groupSubscribed ? "../../resource/ic_tick.png" : "../../resource/ic_rss.png"
+                onClicked: {
+                    subscribeDialog.subscribeData = sourceLinkModel.getCurrentSubscribeGroup()
+                    subscribeDialog.bangumiTitle = title
+                    subscribeDialog.open()
+                }
             }
         }
     }
 
     SubscribeDialog {
         id: subscribeDialog
+
+        onSaved: sourceLinkModel.saveSubscribe(root.title, keywords)
+
+        onCancelSubscribe: sourceLinkModel.removeSubscribe(subscribeDialog.subscribeData)
     }
 }
