@@ -9,6 +9,7 @@ Rectangle {
     color: "transparent"
 
     signal rssClicked
+    signal settingClicked
 
     Image {
         id: headerIcon
@@ -59,6 +60,7 @@ Rectangle {
     }
 
     IconBtn {
+        id: btnRss
         anchors.right: btnClose.left
         anchors.rightMargin: 8
         anchors.verticalCenter: parent.verticalCenter
@@ -66,5 +68,16 @@ Rectangle {
         source: "../../resource/ic_rss.png"
 
         onClicked: rssClicked()
+    }
+
+    IconBtn {
+        id: btnSetting
+        anchors.right: btnRss.left
+        anchors.rightMargin: 8
+        anchors.verticalCenter: parent.verticalCenter
+
+        source: "../../resource/ic_setting.png"
+
+        onClicked: settingClicked()
     }
 }

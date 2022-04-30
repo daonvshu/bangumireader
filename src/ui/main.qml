@@ -5,6 +5,7 @@ import QtGraphicalEffects 1.15
 import "components"
 import "widgets"
 import "subpages"
+import "dialog"
 
 Item {
     width: 1280
@@ -28,6 +29,7 @@ Item {
             anchors.margins: 6
 
             onRssClicked: {}
+            onSettingClicked: settingDialog.open()
         }
 
         AnchorHLine {
@@ -36,7 +38,7 @@ Item {
 
         StackView {
             id: stackview
-            initialItem: bangumipage
+            //initialItem: bangumipage
             clip: true
 
             anchors {
@@ -76,5 +78,9 @@ Item {
         samples: 16
         color: "#BF9270"
         source: bodyRect
+    }
+
+    SettingDialog {
+        id: settingDialog
     }
 }

@@ -10,7 +10,6 @@ ComboBox {
         y: control.topPadding + (control.availableHeight - height) / 2
         width: 12
         height: 8
-        contextType: "2d"
 
         Connections {
             target: control
@@ -18,6 +17,7 @@ ComboBox {
         }
 
         onPaint: {
+            var context = getContext("2d");
             context.reset();
             context.moveTo(0, 0);
             context.lineTo(width, 0);

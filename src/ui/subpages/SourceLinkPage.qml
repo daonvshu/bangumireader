@@ -161,31 +161,9 @@ Rectangle {
                         anchors.leftMargin: 4
                         anchors.rightMargin: 4
 
-                        CheckBox {
-                            id: checkbox
-
-                            nextCheckState: function (args) {
-                                rowChecked = !rowChecked
-                            }
-
-                            indicator: Rectangle {
-                                implicitWidth: 18
-                                implicitHeight: 18
-                                x: checkbox.leftPadding
-                                y: parent.height / 2 - height / 2
-                                radius: 3
-                                border.color: "#BF9270"
-
-                                Rectangle {
-                                    width: 12
-                                    height: 12
-                                    x: 3
-                                    y: 3
-                                    radius: 2
-                                    color: "#BF9270"
-                                    visible: rowChecked
-                                }
-                            }
+                        ColorCheckBox {
+                            isChecked: rowChecked
+                            onCheckedChanged: rowChecked = checked
                         }
 
                         Text {

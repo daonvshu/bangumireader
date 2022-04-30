@@ -15,6 +15,7 @@
 
 #include "models/bangumilistmodel.h"
 #include "models/sourcelinkmodel.h"
+#include "databasemodels/settingtbmodel.h"
 
 #include "dao.h"
 #include "entity/sqliteconfig.h"
@@ -57,6 +58,8 @@ int main(int argc, char* argv[]) {
 
     qmlRegisterType<BangumiListModel>("BangumiListModel", 0, 1, "BangumiListModel");
     qmlRegisterType<SourceLinkModel>("SourceLinkModel", 0, 1, "SourceLinkModel");
+    qmlRegisterType<QmlSettingDialog>("QmlSettingDialog", 0, 1, "QmlSettingDialog");
+    QmlSettingDialog::writeAutoStartDefault();
 
     QQuickView view;
 #ifdef QT_DEBUG

@@ -6,7 +6,7 @@
 #include <qdebug.h>
 
 MikanRssReader::MikanRssReader(QObject *parent)
-    : QObject(parent)
+    : QThread(parent)
 {
 }
 
@@ -117,3 +117,6 @@ void MikanRssReader::parseRssContent(const QByteArray& data, const std::function
     groupDataHandler(groupLinkData);
 }
 
+void MikanRssReader::run() {
+    
+}

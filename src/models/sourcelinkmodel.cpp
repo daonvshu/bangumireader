@@ -114,9 +114,7 @@ void SourceLinkModel::refreshTorrentLinks() {
     if (bangumiId == -1) {
         return;
     }
-    //TODO:make reader single instance
-    auto reader = new MikanRssReader;
-    reader->readRssContent(bangumiId, [&] (const QMap<QString, QList<MikanTorrentLinkData>>& groupData) {
+    MikanRssReader::readRssContent(bangumiId, [&] (const QMap<QString, QList<MikanTorrentLinkData>>& groupData) {
         beginResetModel();
         linkData = groupData;
         filterData.clear();

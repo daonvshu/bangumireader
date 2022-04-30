@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <functional>
+#include <qthread.h>
 
 struct MikanTorrentLinkData {
     Q_GADGET
@@ -24,16 +25,18 @@ public:
 };
 Q_DECLARE_METATYPE(MikanTorrentLinkData)
 
-class MikanRssReader : public QObject
+class MikanRssReader : public QThread
 {
 public:
     MikanRssReader(QObject *parent = nullptr);
 
     static QString rssLink(int bangumiId);
 
-    void readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler);
+    static void readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler);
 
 private:
-    void parseRssContent(const QByteArray& data, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler);
+    static void parseRssContent(const QByteArray& data, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler);
 
+protected:
+    void run() override;
 };
