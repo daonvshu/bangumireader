@@ -7,6 +7,7 @@
 #include <qeventloop.h>
 #include <QtConcurrent/QtConcurrent>
 
+#include "ConnectionPool.h"
 #include "databasemodels/settingtbmodel.h"
 #include "databasemodels/remarktbmodel.h"
 #include "databasemodels/subscribemodel.h"
@@ -232,6 +233,8 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
         downloading = false;
         emit downloadStatusChanged();
         emit requestRefreshList();
+
+        ConnectionPool::closeConnection();
     });
 }
 

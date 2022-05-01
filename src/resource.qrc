@@ -1,5 +1,15 @@
 <RCC>
     <qresource prefix="/">
         <file>log.ico</file>
+        <file>resource/ic_down.png</file>
+        <file>resource/ic_dropdown.png</file>
+        <file>resource/ic_home.png</file>
+        <file>resource/ic_new.png</file>
+        <file>resource/ic_notice.png</file>
+        <file>resource/ic_previous.png</file>
+        <file>resource/ic_remove.png</file>
+        <file>resource/ic_rss.png</file>
+        <file>resource/ic_setting.png</file>
+        <file>resource/ic_tick.png</file>
     </qresource>
 </RCC>

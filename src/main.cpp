@@ -84,10 +84,20 @@ int main(int argc, char* argv[]) {
 
     QSystemTrayIcon systemTray(QIcon(":/log.ico"));
     systemTray.show();
+    QObject::connect(&systemTray, &QSystemTrayIcon::activated, [&] (QSystemTrayIcon::ActivationReason reason) {
+        if (reason == QSystemTrayIcon::DoubleClick) {
+            view.show();
+        }
+    });
+    QTimer::singleShot(60000, [&] {
+        systemTray.showMessage("title", "message");
+    });
 
     QMenu menu;
-    menu.addAction(QStringLiteral("主页"), &view, &QQuickView::show);
-    menu.addAction(QStringLiteral("退出"), &view, &QQuickView::close);
+    menu.addAction(QIcon(":/resource/ic_home.png"), QStringLiteral("主页"), &view, &QQuickView::show);
+    menu.addAction(QIcon(":/resource/ic_remove.png"), QStringLiteral("退出"),  [&] {
+        a.exit();
+    });
     systemTray.setContextMenu(&menu);
 
     return a.exec();

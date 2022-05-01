@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
+import Qt.labs.platform 1.1
 
 import "components"
 import "widgets"
@@ -28,7 +29,9 @@ Item {
             anchors.right: parent.right
             anchors.margins: 6
 
-            onRssClicked: {}
+            onRssClicked: {
+                
+            }
             onSettingClicked: settingDialog.open()
         }
 
@@ -38,7 +41,7 @@ Item {
 
         StackView {
             id: stackview
-            //initialItem: bangumipage
+            initialItem: bangumipage
             clip: true
 
             anchors {
@@ -68,6 +71,7 @@ Item {
 
             SourceLinkPage {
                 onBackPage: stackview.pop()
+                objectName: "sourcelinkpage"
             }
         }
     }
@@ -82,5 +86,36 @@ Item {
 
     SettingDialog {
         id: settingDialog
+    }
+
+    PromptDialog {
+        id: promptDialog
+
+        onLinkClicked: {
+            console.log("link clicked:" + id)
+            if (stackview.currentItem.objectName != "sourcelinkpage") {
+                stackview.push(sourcelinkpage, {
+                    "loadTargetBangumiId": id,
+                    "title": title
+                })
+            } else {
+                stackview.currentItem.loadTargetBangumiId = id
+                stackview.currentItem.title = title
+            }
+        }
+    }
+
+    Timer {
+        interval: 8000
+        running: true
+        onTriggered: {
+            promptDialog.links = [
+                {"group": "ANE", "title": "魔法纪录 魔法少女小圆外传 Final SEASON -浅梦之晓- long text test aaaaaa", "id": 2728},
+                {"group": "ANE", "title": "乙女游戏世界对路人角色很不友好", "id": 2686},
+                {"group": "ANE", "title": "乙女游戏世界对路人角色很不友好", "id": 2686},
+                {"group": "ANE", "title": "乙女游戏世界对路人角色很不友好", "id": 2686},
+            ]
+            promptDialog.show()
+        }
     }
 }
