@@ -34,7 +34,13 @@ Item {
                     stackview.push(rssSubscribePage)
                 }
             }
+
             onSettingClicked: settingDialog.open()
+
+            onCloseClicked: {
+                mainWindow.hide()
+                stackview.pop(null)
+            }
         }
 
         AnchorHLine {
@@ -113,6 +119,7 @@ Item {
         id: promptDialog
 
         onLinkClicked: {
+            mainWindow.show()
             console.log("link clicked:" + id)
             if (stackview.currentItem.objectName != "sourcelinkpage") {
                 stackview.push(sourcelinkpage, {

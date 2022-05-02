@@ -1,11 +1,12 @@
 #include "mikanrssreader.h"
 
+#include <QApplication>
+
 #include "HttpClient.h"
 #include "dao.h"
 
 #include <qxmlstream.h>
 #include <qdebug.h>
-#include <qguiapplication.h>
 #include <qtimer.h>
 
 #include "databasemodels/subscribemodel.h"
@@ -183,6 +184,10 @@ void MikanRssReader::run() {
                 qDebug() << item.toString();
             }
             emit newRssItemFound(newRssItems.values());
+
+            if (QmlSettingDialog::isPlaySound()) {
+                QApplication::beep();
+            }
         }
 
         int syncInterval = QmlSettingDialog::getSyncInterval();

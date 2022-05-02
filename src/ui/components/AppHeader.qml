@@ -10,6 +10,7 @@ Rectangle {
 
     signal rssClicked
     signal settingClicked
+    signal closeClicked()
 
     Image {
         id: headerIcon
@@ -56,7 +57,7 @@ Rectangle {
 
         source: "../../resource/ic_remove.png"
 
-        onClicked: mainWindow.hide()
+        onClicked: closeClicked()
     }
 
     IconBtn {

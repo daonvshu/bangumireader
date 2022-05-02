@@ -119,7 +119,8 @@ Dialog {
                 text: "关闭"
                 icon.source: "../../resource/ic_remove.png"
                 onClicked: {
-                    root.close()
+                    //root.close()
+                    qmlSetting.testBeep(523)
                 }
             }
         }
