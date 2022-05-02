@@ -15,10 +15,13 @@
 
 #include "models/bangumilistmodel.h"
 #include "models/sourcelinkmodel.h"
+#include "models/rsssubscribemodel.h"
 #include "databasemodels/settingtbmodel.h"
 
 #include "dao.h"
 #include "entity/sqliteconfig.h"
+
+#include "utils/mikanrssreader.h"
 
 class CustomDbExceptionHandler : public DbExceptionHandler {
 public:
@@ -59,6 +62,7 @@ int main(int argc, char* argv[]) {
     qmlRegisterType<BangumiListModel>("BangumiListModel", 0, 1, "BangumiListModel");
     qmlRegisterType<SourceLinkModel>("SourceLinkModel", 0, 1, "SourceLinkModel");
     qmlRegisterType<QmlSettingDialog>("QmlSettingDialog", 0, 1, "QmlSettingDialog");
+    qmlRegisterType<RssSubscribeModel>("RssSubscribeModel", 0, 1, "RssSubscribeModel");
     QmlSettingDialog::writeAutoStartDefault();
 
     QQuickView view;
@@ -71,7 +75,12 @@ int main(int argc, char* argv[]) {
 #endif
     view.setFlag(Qt::FramelessWindowHint);
     view.setColor(Qt::transparent);
+
     view.rootContext()->setContextProperty("mainWindow", &view);
+    auto rssReader = new MikanRssReader;
+    view.rootContext()->setContextProperty("rssReader", rssReader);
+    rssReader->start();
+
     view.show();
 
 #ifdef QT_DEBUG
@@ -88,9 +97,6 @@ int main(int argc, char* argv[]) {
         if (reason == QSystemTrayIcon::DoubleClick) {
             view.show();
         }
-    });
-    QTimer::singleShot(60000, [&] {
-        systemTray.showMessage("title", "message");
     });
 
     QMenu menu;

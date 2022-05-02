@@ -30,7 +30,9 @@ Item {
             anchors.margins: 6
 
             onRssClicked: {
-                
+                if (stackview.currentItem.objectName != "rssSubscribePage") {
+                    stackview.push(rssSubscribePage)
+                }
             }
             onSettingClicked: settingDialog.open()
         }
@@ -74,6 +76,25 @@ Item {
                 objectName: "sourcelinkpage"
             }
         }
+
+        Component {
+            id: rssSubscribePage
+
+            RssSubscribePage {
+                onGotoSourceLinkPage: {
+                    stackview.push(sourcelinkpage, {
+                        "loadTargetBangumiId": id,
+                        "title": title
+                    })
+                }
+
+                onBackToHomePage: {
+                    stackview.pop(null)
+                }
+
+                objectName: "rssSubscribePage"
+            }
+        }
     }
 
     DropShadow {
@@ -105,16 +126,11 @@ Item {
         }
     }
 
-    Timer {
-        interval: 8000
-        running: true
-        onTriggered: {
-            promptDialog.links = [
-                {"group": "ANE", "title": "魔法纪录 魔法少女小圆外传 Final SEASON -浅梦之晓- long text test aaaaaa", "id": 2728},
-                {"group": "ANE", "title": "乙女游戏世界对路人角色很不友好", "id": 2686},
-                {"group": "ANE", "title": "乙女游戏世界对路人角色很不友好", "id": 2686},
-                {"group": "ANE", "title": "乙女游戏世界对路人角色很不友好", "id": 2686},
-            ]
+    Connections {
+        target: rssReader
+
+        function onNewRssItemFound(args) {
+            promptDialog.links = args
             promptDialog.show()
         }
     }

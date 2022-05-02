@@ -57,6 +57,23 @@ SubscribeGroupItemList SubScribeGroupsModel::getAllSubscribeGroupItems(int group
     return dao::_select<SubscribeGroupItem>().filter(sif.groupId = groupId).build().list();
 }
 
+SubscribeGroupItemList SubScribeGroupsModel::getAllSubscribeGroupItems(int bangumiId, const QString& groupName) {
+    SubscribeGroups::Fields sf;
+    SubscribeGroupItem::Fields sif;
+
+    auto results = dao::_join<SubscribeGroups, SubscribeGroupItem>()
+        .columnAll<SubscribeGroupItem>()
+        .from<SubscribeGroups>()
+        .innerJoin<SubscribeGroupItem>().on(sif.groupId == sf.id)
+        .filter(sf.bangumiId == bangumiId, sf.groupName == groupName)
+        .build().list();
+    SubscribeGroupItemList data;
+    for (const auto& res: results) {
+        data << std::get<1>(res);
+    }
+    return data;
+}
+
 void SubScribeGroupsModel::removeTargetSubscribeGroupItems(const QList<int>& itemIds) {
     SubscribeGroupItem::Fields sif;
     dao::_delete<SubscribeGroupItem>().filter(sif.id == itemIds).build().deleteBatch();
@@ -73,4 +90,32 @@ bool SubScribeGroupsModel::isSubscribeGroupItemNew(const QString& link) {
 void SubScribeGroupsModel::removeSubscribeGroupItemNewStatus(const QString& link) {
     SubscribeGroupItem::Fields sif;
     dao::_update<SubscribeGroupItem>().set(sif.newItem = 0).filter(sif.sourceLink == link).build().update();
+}
+
+SubscribeTbList SubScribeGroupsModel::getAllSubscribeTarget() {
+    return dao::_selectAll<SubscribeTb>();
+}
+
+SubscribeTbList SubScribeGroupsModel::getAllSubscribeInfo() {
+    SubscribeTb::Fields stf;
+    SubscribeGroups::Fields sgf;
+    SubscribeGroupItem::Fields sif;
+
+    auto d = dao::_join<SubscribeTb, SubscribeGroups, SubscribeGroupItem>()
+        .columnAll<SubscribeTb>()
+        .column(_fun("sum(%1) as newSize").field(sif.newItem))
+        .from<SubscribeTb>()
+        .innerJoin<SubscribeGroups>().on(sgf.bangumiId == stf.bangumiId)
+        .innerJoin<SubscribeGroupItem>().on(sif.groupId == sgf.id)
+        .with(_groupBy(stf.bangumiId))
+        .build().list();
+
+    SubscribeTbList results;
+    for (const auto& res: d) {
+        SubscribeTb stb = std::get<0>(res);
+        SubscribeGroupItem sgi = std::get<2>(res);
+        stb.__putExtra("newSize", sgi.__getExtra("newSize"));
+        results << stb;
+    }
+    return results;
 }

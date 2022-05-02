@@ -1,13 +1,24 @@
 #include "mikanrssreader.h"
 
 #include "HttpClient.h"
+#include "dao.h"
 
 #include <qxmlstream.h>
 #include <qdebug.h>
+#include <qguiapplication.h>
+#include <qtimer.h>
+
+#include "databasemodels/subscribemodel.h"
+#include "databasemodels/settingtbmodel.h"
 
 MikanRssReader::MikanRssReader(QObject *parent)
     : QThread(parent)
 {
+    qRegisterMetaType<QList<MikanNewRssItemInfo>>();
+    connect(qApp, &QGuiApplication::aboutToQuit, this, [&] {
+        isRunning = false;
+        taskStop(QPrivateSignal());
+    });
 }
 
 #define BANGUMI_RSS_URL QString("https://mikanani.me/RSS/Bangumi?bangumiId=%1")
@@ -118,5 +129,67 @@ void MikanRssReader::parseRssContent(const QByteArray& data, const std::function
 }
 
 void MikanRssReader::run() {
-    
+    QEventLoop loop;
+    connect(this, &MikanRssReader::taskStop, &loop, &QEventLoop::quit);
+
+    auto syncWaitTimer = new QTimer(&loop);
+    syncWaitTimer->setSingleShot(true);
+    connect(syncWaitTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
+
+    while (isRunning) {
+
+        QSet<MikanNewRssItemInfo> newRssItems;
+
+        auto allSubscribeTarget = SubScribeGroupsModel::getAllSubscribeTarget();
+        for (const auto& target: allSubscribeTarget) {
+
+            QMap<QString, QList<MikanTorrentLinkData>> currentSubscribeData;
+            readRssContent(target.getBangumiId(), [&] (const QMap<QString, QList<MikanTorrentLinkData>>& data) {
+                currentSubscribeData = data;
+                loop.quit();
+            });
+            loop.exec();
+            if (!isRunning) break;
+
+            for (const auto& key: currentSubscribeData.keys()) {
+
+                auto currentGroupExistItems = SubScribeGroupsModel::getAllSubscribeGroupItems(target.getBangumiId(), key);
+                QSet<QString> existSourceLinkList;
+                for (const auto& item: currentGroupExistItems) {
+                    existSourceLinkList.insert(item.getSourceLink());
+                }
+
+                const auto& newSubscribeData = currentSubscribeData[key];
+                QSet<QString> newSourceLinks;
+                for (const auto& data: newSubscribeData) {
+                    if (!existSourceLinkList.contains(data.downloadUrl)) {
+                        newSourceLinks.insert(data.downloadUrl);
+                    }
+                }
+
+                if (!newSourceLinks.isEmpty()) {
+                    int groupId = SubScribeGroupsModel::getGroup(target.getId(), key).getId();
+                    if (groupId != -1) {
+                        SubScribeGroupsModel::insertSubscribeGroupItems(groupId, newSourceLinks.values());
+                        newRssItems.insert(MikanNewRssItemInfo{ target.getTitle(), key, target.getId() });
+                    }
+                }
+            }
+        }
+
+        if (!newRssItems.isEmpty()) {
+            qDebug() << "find new Rss items:";
+            for (const auto& item: newRssItems) {
+                qDebug() << item.toString();
+            }
+            emit newRssItemFound(newRssItems.values());
+        }
+
+        int syncInterval = QmlSettingDialog::getSyncInterval();
+        syncWaitTimer->start(syncInterval * 1000);
+        loop.exec();
+    }
+
+    qDebug() << "mikan rss sync task quit!!!!!";
+    deleteLater();
 }
