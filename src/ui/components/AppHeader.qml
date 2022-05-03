@@ -58,6 +58,11 @@ Rectangle {
         spacing: 8
 
         IconBtn {
+            source: "../../resource/ic_github.png"
+            onClicked: Qt.openUrlExternally("https://github.com/daonvshu/bangumireader")
+        }
+
+        IconBtn {
             source: "../../resource/ic_database.png"
             onClicked: databaseClicked()
         }
