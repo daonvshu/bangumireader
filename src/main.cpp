@@ -17,6 +17,7 @@
 #include "models/sourcelinkmodel.h"
 #include "models/rsssubscribemodel.h"
 #include "models/bangumidatabaselistmodel.h"
+#include "models/bangumidetailmodel.h"
 
 #include "databasemodels/settingtbmodel.h"
 
@@ -69,6 +70,7 @@ int main(int argc, char* argv[]) {
     qmlRegisterType<QmlSettingDialog>("QmlSettingDialog", 0, 1, "QmlSettingDialog");
     qmlRegisterType<RssSubscribeModel>("RssSubscribeModel", 0, 1, "RssSubscribeModel");
     qmlRegisterType<BangumiDatabaseListModel>("BangumiDatabaseListModel", 0, 1, "BangumiDatabaseListModel");
+    qmlRegisterType<BangumiDetailModel>("BangumiDetailModel", 0, 1, "BangumiDetailModel");
     QmlSettingDialog::writeAutoStartDefault();
 
     QQuickView view;

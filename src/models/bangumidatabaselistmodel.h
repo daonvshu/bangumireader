@@ -46,6 +46,7 @@ public:
     QVariant data(const QModelIndex& index, int role) const override;
 
     Q_INVOKABLE void syncData();
+    Q_INVOKABLE void resetView();
 
 signals:
     void syncStatusChanged();

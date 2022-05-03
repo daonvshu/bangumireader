@@ -79,6 +79,10 @@ void BangumiDatabaseListModel::syncData() {
     bangumiReader->start();
 }
 
+void BangumiDatabaseListModel::resetView() {
+    readLocalData();
+}
+
 void BangumiDatabaseListModel::readLocalData() {
     beginResetModel();
     sourceData.clear();

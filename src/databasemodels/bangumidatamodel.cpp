@@ -35,3 +35,13 @@ void BangumiDataModel::addData(const BangumiDatabaseList& data) {
     }
     dao::_insert<BangumiDatabase>().build().insert(data);
 }
+
+BangumiDatabase BangumiDataModel::getBangumi(int bangumiId) {
+    BangumiDatabase::Fields bf;
+    return dao::_select<BangumiDatabase>().filter(bf.bangumiId == bangumiId).build().one();
+}
+
+bool BangumiDataModel::changeStar(int bangumiId, int star) {
+    BangumiDatabase::Fields bf;
+    return dao::_update<BangumiDatabase>().set(bf.star = star).filter(bf.bangumiId == bangumiId).build().update();
+}

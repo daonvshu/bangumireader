@@ -31,6 +31,8 @@ add_executable (${PROJECT_NAME} WIN32
     models/rsssubscribemodel.cpp
     models/bangumidatabaselistmodel.h
     models/bangumidatabaselistmodel.cpp
+    models/bangumidetailmodel.h
+    models/bangumidetailmodel.cpp
 
     utils/mikanrssreader.h
     utils/mikanrssreader.cpp

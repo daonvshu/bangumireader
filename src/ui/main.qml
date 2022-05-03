@@ -116,7 +116,22 @@ Item {
                     stackview.pop(null)
                 }
 
+                onBangumiClicked: {
+                    console.log("bangumi clicked id:" + bangumiId)
+                    stackview.push(bangumiDetailPage, {
+                        "bangumiId": bangumiId
+                    })
+                }
+
                 objectName: "bangumidatabasepage"
+            }
+        }
+
+        Component {
+            id: bangumiDetailPage
+            
+            BangumiDetailPage {
+                onBackPage: stackview.pop()
             }
         }
     }

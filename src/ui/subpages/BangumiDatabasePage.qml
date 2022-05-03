@@ -11,6 +11,7 @@ Rectangle {
     color: "transparent"
 
     signal backToHomePage
+    signal bangumiClicked(int bangumiId)
 
     MouseArea {
         anchors.fill: parent
@@ -272,6 +273,8 @@ Rectangle {
                             }
                         }
                     }
+
+                    onClicked: bangumiClicked(modelData.bangumiId)
                 }
             }
         }
@@ -340,5 +343,11 @@ Rectangle {
             target = Qt.darker(target, 1.3)
         }
         return target
+    }
+
+    onVisibleChanged: {
+        if (visible) {
+            databaseModel.resetView()
+        }
     }
 }

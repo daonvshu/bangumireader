@@ -11,4 +11,6 @@ public:
     static BangumiDatabaseList getStarStatusSince(qint64 timestamp);
     static void clearDataSince(qint64 timestamp);
     static void addData(const BangumiDatabaseList& data);
+    static BangumiDatabase getBangumi(int bangumiId);
+    static bool changeStar(int bangumiId, int star);
 };
