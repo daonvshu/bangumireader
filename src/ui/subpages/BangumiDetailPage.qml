@@ -81,80 +81,89 @@ Rectangle {
                 anchors.fill: parent
                 anchors.margins: 12
 
-                Grid {
+                Flickable {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    Layout.alignment: Qt.AlignTop
+                    contentHeight: descriptionContent.height
+                    clip: true
 
-                    columns: 2
-                    columnSpacing: 4
-                    rowSpacing: 6
+                    ScrollBar.vertical: ScrollBar { }
 
-                    Text {
-                        font.pixelSize: 12
-                        color: "#BF9270"
-                        text: "简介："
-                    }
+                    GridLayout {
+                        id: descriptionContent
+                        anchors.left: parent.left
+                        anchors.right: parent.right
 
-                    Text {
-                        width: parent.width - 40
-                        font.pixelSize: 12
-                        color: "#BF9270"
-                        text: detailModel.detail.summary
-                        wrapMode: Text.WrapAnywhere
-                    }
+                        columns: 2
+                        columnSpacing: 4
+                        rowSpacing: 6
 
-                    Text {
-                        height: 24
+                        Text {
+                            font.pixelSize: 12
+                            color: "#BF9270"
+                            text: "简介："
+                            Layout.alignment: Qt.AlignTop
+                        }
 
-                        verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: 12
-                        color: "#BF9270"
-                        text: "放送平台："
-                    }
+                        Text {
+                            Layout.fillWidth: true
+                            font.pixelSize: 12
+                            color: "#BF9270"
+                            text: detailModel.detail.summary
+                            wrapMode: Text.WrapAnywhere
+                        }
 
-                    Row {
-                        spacing: 4
-                        Repeater {
-                            model: getPlaySites(detailModel.database.sites)
+                        Text {
+                            font.pixelSize: 12
+                            color: "#BF9270"
+                            text: "放送平台："
+                        }
 
-                            delegate: Button {
-                                hoverEnabled: true
+                        Row {
+                            spacing: 4
+                            Repeater {
+                                model: getPlaySites(detailModel.database.sites)
 
-                                contentItem: Text {
-                                    color: "#827962"
-                                    font.bold: true
-                                    font.pixelSize: 11
-                                    font.underline: hovered
-                    
-                                    text: modelData.tag
-                                }
-            
-                                background: Rectangle {
-                                    radius: 6
-                                    color: hovered ? Qt.lighter("#4fFF7B54", 1.3) : "#4fFF7B54"
-                                    Behavior on color {
-                                        ColorAnimation {
-                                            duration: 150
+                                delegate: Button {
+                                    hoverEnabled: true
+
+                                    contentItem: Text {
+                                        color: "#827962"
+                                        font.bold: true
+                                        font.pixelSize: 11
+                                        font.underline: hovered
+                        
+                                        text: modelData.tag
+                                    }
+                
+                                    background: Rectangle {
+                                        radius: 6
+                                        color: hovered ? Qt.lighter("#4fFF7B54", 1.3) : "#4fFF7B54"
+                                        Behavior on color {
+                                            ColorAnimation {
+                                                duration: 150
+                                            }
                                         }
                                     }
-                                }
 
-                                onClicked: Qt.openUrlExternally(modelData.link)
+                                    onClicked: Qt.openUrlExternally(modelData.link)
+                                }
                             }
                         }
-                    }
 
-                    Text {
-                        font.pixelSize: 12
-                        color: "#BF9270"
-                        text: "官方网站："
-                    }
+                        Text {
+                            font.pixelSize: 12
+                            color: "#BF9270"
+                            text: "官方网站："
+                        }
 
-                    Text {
-                        font.pixelSize: 11
-                        text: "<a href=\"" + detailModel.database.officialSite + "\">" + detailModel.database.officialSite + "</a>"
+                        Text {
+                            font.pixelSize: 11
+                            text: "<a href=\"" + detailModel.database.officialSite + "\">" + detailModel.database.officialSite + "</a>"
 
-                        onLinkActivated: Qt.openUrlExternally(detailModel.database.officialSite)
+                            onLinkActivated: Qt.openUrlExternally(detailModel.database.officialSite)
+                        }
                     }
                 }
 
