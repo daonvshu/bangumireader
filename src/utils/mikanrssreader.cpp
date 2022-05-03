@@ -31,8 +31,9 @@ QString MikanRssReader::rssLink(int bangumiId) {
 void MikanRssReader::readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler) {
     static AeaQt::HttpClient client;
     client.get(rssLink(bangumiId))
-        .onFailed([&](const QByteArray& reason) {
+        .onFailed([=](const QByteArray& reason) {
             qDebug() << reason;
+            groupDataHandler({});
     })
         .onSuccess([=](const QByteArray& data) {
             parseRssContent(data, groupDataHandler);

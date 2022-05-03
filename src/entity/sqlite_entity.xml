@@ -25,4 +25,14 @@
     <item name="sourceLink" type="text" note="字幕组订阅下的种子链接"/>
     <item name="newItem" type="int" default="1" note="是否是new状态"/>
   </tb>
+  <tb name="BangumiDatabase" declaremetatype="true">
+    <item name="id" type="int" autoincrement="true" default="-1" constraints="primary key"/>
+    <item name="bangumiId" type="int" note="Bangumi网站数据id"/>
+    <item name="title" type="text" note="番剧名"/>
+    <item name="type" type="text" note="番剧类型"/>
+    <item name="officialSite" type="text" note="官方网站"/>
+    <item name="beginDate" type="long" note="开播时间"/>
+    <item name="sites" type="text" note="放送网站"/>
+    <item name="star" type="int" note="标记"/>
+  </tb>
 </dao>

@@ -233,6 +233,7 @@ Rectangle {
                 clip: true
                 
                 text: sourceLinkModel.filterKeywords
+                font.pixelSize: 14
                 onTextChanged: sourceLinkModel.filterKeywords = text
 
                 background: Rectangle {

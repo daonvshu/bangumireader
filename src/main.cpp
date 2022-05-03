@@ -16,6 +16,8 @@
 #include "models/bangumilistmodel.h"
 #include "models/sourcelinkmodel.h"
 #include "models/rsssubscribemodel.h"
+#include "models/bangumidatabaselistmodel.h"
+
 #include "databasemodels/settingtbmodel.h"
 
 #include "dao.h"
@@ -47,6 +49,9 @@ public:
 void SqlLogPrinter(const QString& sql, const QVariantList& values) {
 #ifdef QT_DEBUG
     static QString error = "[DAO PRINT DEBUG] [sql]: %1, [values]: ";
+    if (sql.startsWith("insert into ir_bangumidatabase")) {
+        return;
+    }
     qDebug() << error.arg(sql) << values;
 #endif
 }
@@ -63,6 +68,7 @@ int main(int argc, char* argv[]) {
     qmlRegisterType<SourceLinkModel>("SourceLinkModel", 0, 1, "SourceLinkModel");
     qmlRegisterType<QmlSettingDialog>("QmlSettingDialog", 0, 1, "QmlSettingDialog");
     qmlRegisterType<RssSubscribeModel>("RssSubscribeModel", 0, 1, "RssSubscribeModel");
+    qmlRegisterType<BangumiDatabaseListModel>("BangumiDatabaseListModel", 0, 1, "BangumiDatabaseListModel");
     QmlSettingDialog::writeAutoStartDefault();
 
     QQuickView view;

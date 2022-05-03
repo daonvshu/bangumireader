@@ -41,6 +41,12 @@ Item {
                 mainWindow.hide()
                 stackview.pop(null)
             }
+
+            onDatabaseClicked: {
+                if (stackview.currentItem.objectName != "bangumidatabasepage") {
+                    stackview.push(bangumidatabasepage)
+                }
+            }
         }
 
         AnchorHLine {
@@ -99,6 +105,18 @@ Item {
                 }
 
                 objectName: "rssSubscribePage"
+            }
+        }
+
+        Component {
+            id: bangumidatabasepage
+
+            BangumiDatabasePage {
+                onBackToHomePage: {
+                    stackview.pop(null)
+                }
+
+                objectName: "bangumidatabasepage"
             }
         }
     }

@@ -29,9 +29,13 @@ add_executable (${PROJECT_NAME} WIN32
     models/sourcelinkmodel.cpp
     models/rsssubscribemodel.h
     models/rsssubscribemodel.cpp
+    models/bangumidatabaselistmodel.h
+    models/bangumidatabaselistmodel.cpp
 
     utils/mikanrssreader.h
     utils/mikanrssreader.cpp
+    utils/bangumidatabasereader.h
+    utils/bangumidatabasereader.cpp
 
     ${filewatcher}/filewatcher.h
     ${filewatcher}/filewatcher.cpp
@@ -47,6 +51,8 @@ add_executable (${PROJECT_NAME} WIN32
     databasemodels/remarktbmodel.cpp
     databasemodels/subscribemodel.h
     databasemodels/subscribemodel.cpp
+    databasemodels/bangumidatamodel.h
+    databasemodels/bangumidatamodel.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

@@ -3,11 +3,12 @@ import QtQuick.Controls 2.15
 
 Button {
     id: control
+    height: 38
 
     background: Rectangle {
         id: rectBg
 
-        implicitHeight: 38
+        implicitHeight: control.height
 
         opacity: enabled ? 1.0 : 0.3
 

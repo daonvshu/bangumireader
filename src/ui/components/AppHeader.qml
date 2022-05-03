@@ -10,7 +10,8 @@ Rectangle {
 
     signal rssClicked
     signal settingClicked
-    signal closeClicked()
+    signal closeClicked
+    signal databaseClicked
 
     Image {
         id: headerIcon
@@ -49,36 +50,31 @@ Rectangle {
         }
     }
 
-    IconBtn {
-        id: btnClose
+    Row {
         anchors.right: parent.right
         anchors.rightMargin: 8
         anchors.verticalCenter: parent.verticalCenter
 
-        source: "../../resource/ic_remove.png"
+        spacing: 8
 
-        onClicked: closeClicked()
-    }
+        IconBtn {
+            source: "../../resource/ic_database.png"
+            onClicked: databaseClicked()
+        }
 
-    IconBtn {
-        id: btnRss
-        anchors.right: btnClose.left
-        anchors.rightMargin: 8
-        anchors.verticalCenter: parent.verticalCenter
+        IconBtn {
+            source: "../../resource/ic_setting.png"
+            onClicked: settingClicked()
+        }
 
-        source: "../../resource/ic_rss.png"
+        IconBtn {
+            source: "../../resource/ic_rss.png"
+            onClicked: rssClicked()
+        }
 
-        onClicked: rssClicked()
-    }
-
-    IconBtn {
-        id: btnSetting
-        anchors.right: btnRss.left
-        anchors.rightMargin: 8
-        anchors.verticalCenter: parent.verticalCenter
-
-        source: "../../resource/ic_setting.png"
-
-        onClicked: settingClicked()
+        IconBtn {
+            source: "../../resource/ic_remove.png"
+            onClicked: closeClicked()
+        }
     }
 }

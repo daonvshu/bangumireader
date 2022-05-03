@@ -1,11 +1,15 @@
 #include <qcoreapplication.h>
 #include <qtextstream.h>
 #include <qdebug.h>
+#include <qdatetime.h>
 
 #include "../src/utils/textutil.h"
 
 int main(int argc, char* argv[]) {
     QCoreApplication a(argc, argv);
+
+    QDateTime dateTime = QDateTime::fromString("2016-03-26T10:00:00.000Z", "yyyy-MM-ddTHH:mm:ss.zzzZ");
+    qDebug() << dateTime.toMSecsSinceEpoch();
 
     //test keywords parse
     QTextStream qin(stdin);

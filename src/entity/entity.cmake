@@ -12,4 +12,5 @@ set(ENTITY_FILE_LIST
     ${CMAKE_CURRENT_LIST_DIR}/SubscribeTb.h
     ${CMAKE_CURRENT_LIST_DIR}/SubscribeGroups.h
     ${CMAKE_CURRENT_LIST_DIR}/SubscribeGroupItem.h
+    ${CMAKE_CURRENT_LIST_DIR}/BangumiDatabase.h
 )
