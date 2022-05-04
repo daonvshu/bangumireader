@@ -41,7 +41,7 @@ Dialog {
             Image {
                 anchors.verticalCenter: parent.verticalCenter
                 sourceSize.width: 16
-                source: "../../resource/ic_rss.png"
+                source: "qrc:/resource/ic_rss.png"
             }
 
             Text {
@@ -172,7 +172,7 @@ Dialog {
 
             IconBtn2 {
                 text: "保存设置"
-                icon.source: "../../resource/ic_down.png"
+                icon.source: "qrc:/resource/ic_down.png"
                 onClicked: {
                     saved(keywordsInput.text)
                     root.close()
@@ -181,7 +181,7 @@ Dialog {
     
             IconBtn2 {
                 text: "取消订阅"
-                icon.source: "../../resource/ic_remove.png"
+                icon.source: "qrc:/resource/ic_remove.png"
                 onClicked: {
                     cancelSubscribe()
                     root.close()

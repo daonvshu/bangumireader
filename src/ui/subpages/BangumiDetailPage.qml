@@ -27,7 +27,7 @@ Rectangle {
             spacing: 4
 
             IconBtn {
-                source: "../../resource/ic_previous.png"
+                source: "qrc:/resource/ic_previous.png"
                 width: 20
                 height: 20
         
@@ -52,7 +52,7 @@ Rectangle {
                     anchors.centerIn: parent
 
                     sourceSize.width: 12
-                    source: "../../resource/ic_star.png"
+                    source: "qrc:/resource/ic_star.png"
     
                     MouseArea {
                         anchors.fill: parent

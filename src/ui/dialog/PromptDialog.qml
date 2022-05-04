@@ -38,7 +38,7 @@ Window {
                 Image {
                     anchors.verticalCenter: parent.verticalCenter
                     sourceSize.width: 16
-                    source: "../../resource/ic_notice.png"
+                    source: "qrc:/resource/ic_notice.png"
                 }
 
                 Text {

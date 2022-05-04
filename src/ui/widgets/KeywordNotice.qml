@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 
 Image {
     id: noticeIcon
-    source: "../../resource/ic_notice.png"
+    source: "qrc:/resource/ic_notice.png"
 
     MouseArea {
         anchors.fill: parent

@@ -36,7 +36,7 @@ Rectangle {
 
             IconBtn {
                 anchors.verticalCenter: parent.verticalCenter
-                source: "../../resource/ic_previous.png"
+                source: "qrc:/resource/ic_previous.png"
                 width: 20
                 height: 20
         
@@ -179,7 +179,7 @@ Rectangle {
                         Image {
                             Layout.alignment: Qt.AlignVCenter
 
-                            source: "../../resource/ic_new.png"
+                            source: "qrc:/resource/ic_new.png"
                             visible: sourceLinkModel.groupSubscribed && newStatus
                         }
 
@@ -188,7 +188,7 @@ Rectangle {
 
                             width: 16
                             height: 16
-                            source: "../../resource/ic_down.png"
+                            source: "qrc:/resource/ic_down.png"
                             opacity: downloaded ? 0.3 : 1
 
                             onClicked: {
@@ -211,7 +211,7 @@ Rectangle {
             IconBtn2 {
                 text: "全选"
                 enabled: !sourceLinkModel.downloading
-                icon.source: "../../resource/ic_tick.png"
+                icon.source: "qrc:/resource/ic_tick.png"
                 onClicked: sourceLinkModel.selectAllItems()
             }
 
@@ -255,13 +255,13 @@ Rectangle {
             IconBtn2 {
                 text: "下载选中"
                 enabled: !sourceLinkModel.downloading
-                icon.source: "../../resource/ic_down.png"
+                icon.source: "qrc:/resource/ic_down.png"
                 onClicked: sourceLinkModel.downloadSelectedRowLinks()
             }
 
             IconBtn2 {
                 text: "订阅字幕组"
-                icon.source: sourceLinkModel.groupSubscribed ? "../../resource/ic_tick.png" : "../../resource/ic_rss.png"
+                icon.source: sourceLinkModel.groupSubscribed ? "qrc:/resource/ic_tick.png" : "qrc:/resource/ic_rss.png"
                 onClicked: {
                     subscribeDialog.subscribeData = sourceLinkModel.getCurrentSubscribeGroup()
                     subscribeDialog.bangumiTitle = title

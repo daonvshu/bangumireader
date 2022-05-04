@@ -34,7 +34,7 @@ Rectangle {
             spacing: 4
 
             IconBtn {
-                source: "../../resource/ic_previous.png"
+                source: "qrc:/resource/ic_previous.png"
                 width: 20
                 height: 20
         
@@ -55,7 +55,7 @@ Rectangle {
             IconBtn2 {
                 height: 32
                 text: "同步"
-                icon.source: "../../resource/ic_cloud_sync.png"
+                icon.source: "qrc:/resource/ic_cloud_sync.png"
 
                 onClicked: databaseModel.syncData()
             }
@@ -260,7 +260,7 @@ Rectangle {
                             visible: modelData.star == 1
                             anchors.verticalCenter: parent.verticalCenter
                             sourceSize.width: 12
-                            source: "../../resource/ic_star.png"
+                            source: "qrc:/resource/ic_star.png"
                         }
                     }
 
@@ -315,7 +315,7 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 12
-                icon.source: "../../resource/ic_remove.png"
+                icon.source: "qrc:/resource/ic_remove.png"
                 text: "关闭"
 
                 onClicked: databaseModel.syncStatus = false

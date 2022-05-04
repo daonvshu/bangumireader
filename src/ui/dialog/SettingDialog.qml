@@ -40,7 +40,7 @@ Dialog {
             Image {
                 anchors.verticalCenter: parent.verticalCenter
                 sourceSize.width: 16
-                source: "../../resource/ic_setting.png"
+                source: "qrc:/resource/ic_setting.png"
             }
 
             Text {
@@ -117,7 +117,7 @@ Dialog {
     
             IconBtn2 {
                 text: "关闭"
-                icon.source: "../../resource/ic_remove.png"
+                icon.source: "qrc:/resource/ic_remove.png"
                 onClicked: {
                     root.close()
                 }

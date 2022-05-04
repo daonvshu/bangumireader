@@ -30,7 +30,7 @@ Rectangle {
 
             IconBtn {
                 anchors.verticalCenter: parent.verticalCenter
-                source: "../../resource/ic_previous.png"
+                source: "qrc:/resource/ic_previous.png"
                 width: 20
                 height: 20
         

@@ -58,27 +58,27 @@ Rectangle {
         spacing: 8
 
         IconBtn {
-            source: "../../resource/ic_github.png"
+            source: "qrc:/resource/ic_github.png"
             onClicked: Qt.openUrlExternally("https://github.com/daonvshu/bangumireader")
         }
 
         IconBtn {
-            source: "../../resource/ic_database.png"
+            source: "qrc:/resource/ic_database.png"
             onClicked: databaseClicked()
         }
 
         IconBtn {
-            source: "../../resource/ic_setting.png"
+            source: "qrc:/resource/ic_setting.png"
             onClicked: settingClicked()
         }
 
         IconBtn {
-            source: "../../resource/ic_rss.png"
+            source: "qrc:/resource/ic_rss.png"
             onClicked: rssClicked()
         }
 
         IconBtn {
-            source: "../../resource/ic_remove.png"
+            source: "qrc:/resource/ic_remove.png"
             onClicked: closeClicked()
         }
     }
