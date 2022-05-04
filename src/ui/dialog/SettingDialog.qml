@@ -74,14 +74,14 @@ Dialog {
 
             ColorCheckBox {
                 text: "播放提示音"
-                isChecked: qmlSetting.playSound
-                onCheckedChanged: qmlSetting.playSound = checked
+                checked: qmlSetting.playSound
+                onClicked: qmlSetting.playSound = checked
             }
 
             ColorCheckBox {
                 text: "开机自启动"
-                isChecked: qmlSetting.autoStart
-                onCheckedChanged: qmlSetting.autoStart = checked
+                checked: qmlSetting.autoStart
+                onClicked: qmlSetting.autoStart = checked
             }
 
             Row {

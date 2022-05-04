@@ -162,8 +162,8 @@ Rectangle {
                         anchors.rightMargin: 4
 
                         ColorCheckBox {
-                            isChecked: rowChecked
-                            onCheckedChanged: rowChecked = checked
+                            checked: rowChecked
+                            onClicked: rowChecked = checked
                         }
 
                         Text {

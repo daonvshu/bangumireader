@@ -57,7 +57,7 @@ Item {
 
         StackView {
             id: stackview
-            initialItem: bangumipage
+            initialItem: rssSubscribePage
             clip: true
 
             anchors {

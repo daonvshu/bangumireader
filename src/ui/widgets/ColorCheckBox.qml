@@ -4,8 +4,6 @@ import QtQuick.Controls 2.15
 CheckBox {
     id: control
 
-    property var isChecked
-
     contentItem: Text {
         leftPadding: control.indicator.width + (control.text.length === 0 ? 0 : control.spacing)
         text: control.text
@@ -30,9 +28,5 @@ CheckBox {
             color: "#BF9270"
             visible: control.checked
         }
-    }
-
-    Component.onCompleted: {
-        control.checked = isChecked
     }
 }
