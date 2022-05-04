@@ -3,6 +3,8 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 import Qt.labs.platform 1.1
 
+import VersionChecker 0.1
+
 import "components"
 import "widgets"
 import "subpages"
@@ -172,6 +174,53 @@ Item {
         function onNewRssItemFound(args) {
             promptDialog.links = args
             promptDialog.show()
+        }
+    }
+
+    VersionChecker {
+        id: versionChecker
+    }
+
+    Popup {
+        id: popup
+        width: 300
+        height: 120
+        x: (mainWindow.width - width) / 2
+        y: (mainWindow.height - height) / 2 - 32
+        modal: true
+        focus: true
+        visible: versionChecker.newVersionDetect
+        closePolicy: Popup.CloseOnPressOutside
+
+        contentItem: Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+
+            Text {
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.margins: 12
+                text: "发现新版本：" + versionChecker.newVersionString
+                font.pixelSize: 14
+            }
+
+            IconBtn2 {
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.margins: 12
+                height: 32
+                text: "前去下载"
+
+                onClicked: {
+                    versionChecker.newVersionDetect = false
+                    Qt.openUrlExternally("https://github.com/daonvshu/bangumireader/releases")
+                }
+            }
+        }
+
+        background: Rectangle {
+            radius: 6
+            color: "#FFEDDB"
         }
     }
 }

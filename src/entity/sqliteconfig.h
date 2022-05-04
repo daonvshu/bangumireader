@@ -19,6 +19,6 @@ public:
     }
 
     QString getDatabaseName() {
-        return "mikan_bangumi_reader";
+        return "bangumi_reader";
     }
 };

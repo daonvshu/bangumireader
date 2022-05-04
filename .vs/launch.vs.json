@@ -5,8 +5,8 @@
     {
       "type": "default",
       "project": "CMakeLists.txt",
-      "projectTarget": "mikanbangumireader.exe (src\\mikanbangumireader.exe)",
-      "name": "mikanbangumireader.exe (src\\mikanbangumireader.exe)",
+      "projectTarget": "test.exe (test\\test.exe)",
+      "name": "test.exe (test\\test.exe)",
       "environment": [
         {
           "name": "PATH",
@@ -17,8 +17,8 @@
     {
       "type": "default",
       "project": "CMakeLists.txt",
-      "projectTarget": "test.exe (test\\test.exe)",
-      "name": "test.exe (test\\test.exe)",
+      "projectTarget": "bangumireader.exe (src\\bangumireader.exe)",
+      "name": "bangumireader.exe (src\\bangumireader.exe)",
       "environment": [
         {
           "name": "PATH",

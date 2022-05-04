@@ -24,6 +24,22 @@ void SettingTbModel::updateSaveDirectory(const QString& path) {
     dao::_insert<SettingTb>().build().insertOrReplace(setting);
 }
 
+QString SettingTbModel::getLastCheckVersion() {
+    SettingTb::Fields sf;
+    auto d = dao::_select<SettingTb>()
+        .filter(sf.name == "lastCheckVersion")
+        .build().unique();
+    if (d.getData().toString().isEmpty()) {
+        return APP_VERSION;
+    }
+    return d.getData().toString();
+}
+
+void SettingTbModel::saveLastCheckVersion(const QString& versionStr) {
+    SettingTb setting("lastCheckVersion", versionStr);
+    dao::_insert<SettingTb>().build().insertOrReplace(setting);
+}
+
 bool QmlSettingDialog::isPlaySound() {
     SettingTb::Fields sf;
     auto d = dao::_select<SettingTb>()

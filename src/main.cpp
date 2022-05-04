@@ -25,6 +25,7 @@
 #include "entity/sqliteconfig.h"
 
 #include "utils/mikanrssreader.h"
+#include "utils/versionchecker.h"
 
 class CustomDbExceptionHandler : public DbExceptionHandler {
 public:
@@ -61,6 +62,7 @@ int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
 
     a.setFont(QFont("Microsoft YaHei UI"));
+    a.setWindowIcon(QIcon(":/log.ico"));
 
     daoSetQueryLogPrinter(SqlLogPrinter);
     DbLoader::init(SqliteConfig(), new CustomDbExceptionHandler);
@@ -71,6 +73,7 @@ int main(int argc, char* argv[]) {
     qmlRegisterType<RssSubscribeModel>("RssSubscribeModel", 0, 1, "RssSubscribeModel");
     qmlRegisterType<BangumiDatabaseListModel>("BangumiDatabaseListModel", 0, 1, "BangumiDatabaseListModel");
     qmlRegisterType<BangumiDetailModel>("BangumiDetailModel", 0, 1, "BangumiDetailModel");
+    qmlRegisterType<VersionChecker>("VersionChecker", 0, 1, "VersionChecker");
     QmlSettingDialog::writeAutoStartDefault();
 
     QQuickView view;

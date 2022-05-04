@@ -6,6 +6,8 @@ class SettingTbModel {
 public:
     static QString getLastSaveDirectory();
     static void updateSaveDirectory(const QString& path);
+    static QString getLastCheckVersion();
+    static void saveLastCheckVersion(const QString& versionStr);
 };
 
 class QmlSettingDialog: public QObject {
