@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <functional>
+#include <qeventloop.h>
 #include <qthread.h>
 
 struct MikanTorrentLinkData {
@@ -61,7 +62,7 @@ public:
 
     static QString rssLink(int bangumiId);
 
-    static void readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler);
+    static void readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler, QEventLoop* loop = nullptr);
 
 signals:
     void taskStop(QPrivateSignal);

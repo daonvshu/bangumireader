@@ -28,17 +28,40 @@ QString MikanRssReader::rssLink(int bangumiId) {
     return BANGUMI_RSS_URL.arg(bangumiId);
 }
 
-void MikanRssReader::readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler) {
-    static AeaQt::HttpClient client;
-    client.get(rssLink(bangumiId))
-        .onFailed([=](const QByteArray& reason) {
-            qDebug() << reason;
-            groupDataHandler({});
-    })
-        .onSuccess([=](const QByteArray& data) {
-            parseRssContent(data, groupDataHandler);
-    })
-        .exec();
+void MikanRssReader::readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler, QEventLoop* loop) {
+
+    const auto& onFailed = [=](const QByteArray& reason) {
+        qDebug() << reason;
+        groupDataHandler({});
+    };
+
+    const auto& onSuccess = [=](const QByteArray& data) {
+        parseRssContent(data, groupDataHandler);
+    };
+
+    const auto& onFinished = [=] {
+        if (loop != nullptr) {
+            loop->quit();
+        }
+    };
+
+    if (loop != nullptr) {
+        AeaQt::HttpClient client;
+        client.get(rssLink(bangumiId))
+            .onFailed(onFailed)
+            .onSuccess(onSuccess)
+            .onFinished(onFinished)
+            .exec();
+
+        loop->exec();
+    } else {
+        static AeaQt::HttpClient client;
+        client.get(rssLink(bangumiId))
+            .onFailed(onFailed)
+            .onSuccess(onSuccess)
+            .onFinished(onFinished)
+            .exec();
+    }
 }
 
 bool miKanTorrentLinkDataCompare(const MikanTorrentLinkData& left, const MikanTorrentLinkData& right) {
@@ -148,9 +171,7 @@ void MikanRssReader::run() {
             QMap<QString, QList<MikanTorrentLinkData>> currentSubscribeData;
             readRssContent(target.getBangumiId(), [&] (const QMap<QString, QList<MikanTorrentLinkData>>& data) {
                 currentSubscribeData = data;
-                loop.quit();
-            });
-            loop.exec();
+            }, &loop);
             if (!isRunning) break;
 
             for (const auto& key: currentSubscribeData.keys()) {
