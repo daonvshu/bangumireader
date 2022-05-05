@@ -104,12 +104,13 @@ void BangumiListModel::parseHtmlData(const QByteArray& data) {
         qDebug() << "reader error occur:" << reader.error() << reader.errorString();
     }
     qDebug() << "decode bangumi data size:" << bangumiData.size();
+    /*
     for (const auto& w : bangumiData.keys()) {
         qDebug() << "week:" << w;
         for (const auto& d : bangumiData[w]) {
             qDebug() << d.toString();
         }
-    }
+    }*/
 
     if (bangumiData.isEmpty()) {
         endResetModel();

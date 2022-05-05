@@ -47,6 +47,8 @@ add_executable (${PROJECT_NAME} WIN32
     utils/bangumidatabasereader.cpp
     utils/versionchecker.h
     utils/versionchecker.cpp
+    utils/myquickview.h
+    utils/myquickview.cpp
 
     ${filewatcher}/filewatcher.h
     ${filewatcher}/filewatcher.cpp

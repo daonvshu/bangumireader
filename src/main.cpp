@@ -1,13 +1,9 @@
 #include <qapplication.h>
-#include <qqmlapplicationengine.h>
-#include <qquickview.h>
-#include <qqmlcontext.h>
 
 #include <qsystemtrayicon.h>
 #include <qmenu.h>
 #include <qdir.h>
 #include <qfont.h>
-#include <qfontdatabase.h>
 #include <qmessagebox.h>
 #include <qdebug.h>
 
@@ -24,8 +20,8 @@
 #include "dao.h"
 #include "entity/sqliteconfig.h"
 
-#include "utils/mikanrssreader.h"
 #include "utils/versionchecker.h"
+#include "utils/myquickview.h"
 
 class CustomDbExceptionHandler : public DbExceptionHandler {
 public:
@@ -76,28 +72,12 @@ int main(int argc, char* argv[]) {
     qmlRegisterType<VersionChecker>("VersionChecker", 0, 1, "VersionChecker");
     QmlSettingDialog::writeAutoStartDefault();
 
-    QQuickView view;
-#ifdef QT_DEBUG
-    const QDir workDir(PROJECT_UI_PATH);
-    const QUrl sourceFile = QUrl::fromLocalFile(workDir.filePath("main.qml"));
-    view.setSource(sourceFile);
-#else
-    view.setSource(QUrl("qrc:/ui/main.qml"));
-#endif
-    view.setFlag(Qt::FramelessWindowHint);
-    view.setColor(Qt::transparent);
-
-    view.rootContext()->setContextProperty("mainWindow", &view);
-    auto rssReader = new MikanRssReader;
-    view.rootContext()->setContextProperty("rssReader", rssReader);
-    rssReader->start();
-
+    MyQuickView view;
     view.show();
 
 #ifdef QT_DEBUG
     FileWatcher fileWatcher([&](const QString&) {
-        view.engine()->clearComponentCache();
-        view.setSource(sourceFile);
+        view.reloadSource();
     });
     fileWatcher.setDirectory(PROJECT_UI_PATH, "qml");
 #endif

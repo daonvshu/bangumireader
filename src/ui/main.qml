@@ -13,7 +13,7 @@ Item {
     width: 1280
     height: 768
     visible: true
-    
+
     Rectangle {
         id: bodyRect
         anchors.fill: parent
@@ -39,8 +39,7 @@ Item {
             onSettingClicked: settingDialog.open()
 
             onCloseClicked: {
-                mainWindow.hide()
-                stackview.pop(null)
+                mainWindow.prepareToHide()
             }
 
             onDatabaseClicked: {

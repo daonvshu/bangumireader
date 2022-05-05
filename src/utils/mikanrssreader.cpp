@@ -105,9 +105,12 @@ void MikanRssReader::parseRssContent(const QByteArray& data, const std::function
         }
     }
 
+    /*
     for (const auto& d : rssData) {
         qDebug() << d.toString();
     }
+    */
+    qDebug() << "read rss data size:" << rssData.size();
 
     qSort(rssData.begin(), rssData.end(), miKanTorrentLinkDataCompare);
 
@@ -142,6 +145,7 @@ void MikanRssReader::parseRssContent(const QByteArray& data, const std::function
         groupLinkData[groupName] << d;
     }
 
+    /*
     qDebug() << "grouped torrent link data:";
     for (const auto& key: groupLinkData.keys()) {
         qDebug() << "group:" << key;
@@ -149,6 +153,8 @@ void MikanRssReader::parseRssContent(const QByteArray& data, const std::function
             qDebug() << i.toString();
         }
     }
+    */
+    qDebug() << "grouped size:" << groupLinkData.size();
 
     groupDataHandler(groupLinkData);
 }
