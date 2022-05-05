@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/main.qml</file>
+        <file>ui/qmldir</file>
+        <file>ui/components/AppHeader.qml</file>
+        <file>ui/components/BangumiListView.qml</file>
+        <file>ui/dialog/PromptDialog.qml</file>
+        <file>ui/dialog/SettingDialog.qml</file>
+        <file>ui/dialog/SubscribeDialog.qml</file>
+        <file>ui/subpages/BangumiDatabasePage.qml</file>
+        <file>ui/subpages/BangumiDetailPage.qml</file>
+        <file>ui/subpages/BangumiListPage.qml</file>
+        <file>ui/subpages/RssSubscribePage.qml</file>
+        <file>ui/subpages/SourceLinkPage.qml</file>
+        <file>ui/widgets/AnchorHLine.qml</file>
+        <file>ui/widgets/ColorCheckBox.qml</file>
+        <file>ui/widgets/GradientBg.qml</file>
+        <file>ui/widgets/IconBtn.qml</file>
+        <file>ui/widgets/IconBtn2.qml</file>
+        <file>ui/widgets/KeywordNotice.qml</file>
+        <file>ui/widgets/RoundButton.qml</file>
+        <file>ui/widgets/RoundComboBox.qml</file>
+    </qresource>
+</RCC>

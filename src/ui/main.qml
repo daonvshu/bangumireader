@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
-import Qt.labs.platform 1.1
 
 import VersionChecker 0.1
 
@@ -57,7 +56,7 @@ Item {
 
         StackView {
             id: stackview
-            initialItem: rssSubscribePage
+            initialItem: bangumipage
             clip: true
 
             anchors {

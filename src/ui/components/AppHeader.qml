@@ -20,7 +20,7 @@ Rectangle {
             width: 24
             height: 24
         }
-        source: "qrc:/log.ico"
+        source: "qrc:/resource/logo.png"
     }
 
     Text {

@@ -15,5 +15,6 @@
         <file>resource/ic_database.png</file>
         <file>resource/ic_github.png</file>
         <file>resource/ic_star.png</file>
+        <file>resource/logo.png</file>
     </qresource>
 </RCC>

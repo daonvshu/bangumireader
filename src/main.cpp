@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
 
     a.setFont(QFont("Microsoft YaHei UI"));
-    a.setWindowIcon(QIcon(":/log.ico"));
+    a.setWindowIcon(QIcon(":/resource/logo.png"));
 
     daoSetQueryLogPrinter(SqlLogPrinter);
     DbLoader::init(SqliteConfig(), new CustomDbExceptionHandler);
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
     const QUrl sourceFile = QUrl::fromLocalFile(workDir.filePath("main.qml"));
     view.setSource(sourceFile);
 #else
-
+    view.setSource(QUrl("qrc:/ui/main.qml"));
 #endif
     view.setFlag(Qt::FramelessWindowHint);
     view.setColor(Qt::transparent);
@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
     fileWatcher.setDirectory(PROJECT_UI_PATH, "qml");
 #endif
 
-    QSystemTrayIcon systemTray(QIcon(":/log.ico"));
+    QSystemTrayIcon systemTray(QIcon(":/resource/logo.png"));
     systemTray.show();
     QObject::connect(&systemTray, &QSystemTrayIcon::activated, [&] (QSystemTrayIcon::ActivationReason reason) {
         if (reason == QSystemTrayIcon::DoubleClick) {
