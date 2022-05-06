@@ -9,8 +9,16 @@
 ![](screenshot/bangumi_database_page.png)
 ![](screenshot/bangumi_database_detail.png)
 
-### 数据源
+### 数据源支持
 - [蜜柑](https://mikanani.me/)
 - [Bangumi Data](https://github.com/bangumi-data/bangumi-data)
 - [番组计划](https://bangumi.tv/)
 
+### 第三方插件
+- [qtdao](https://github.com/daonvshu/QtDao)
+- [qtnetworkservice](https://github.com/aeagean/QtNetworkService)
+- [google breakpad](https://chromium.googlesource.com/breakpad/breakpad)
+
+### 编译/运行
+- Visual Studio 2022
+- Qt5.15.2/qml
