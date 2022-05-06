@@ -23,6 +23,9 @@
 #include "utils/versionchecker.h"
 #include "utils/myquickview.h"
 
+#include "crashlistener.h"
+#include "log.h"
+
 class CustomDbExceptionHandler : public DbExceptionHandler {
 public:
     using DbExceptionHandler::DbExceptionHandler;
@@ -60,6 +63,15 @@ int main(int argc, char* argv[]) {
     a.setFont(QFont("Microsoft YaHei UI"));
     a.setWindowIcon(QIcon(":/resource/logo.png"));
 
+    //日志输出到控制台
+    Log::useQDebugOnly();
+
+    //设置应用accessKey
+    CrashListener crashListener(
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6Ind3dy5l"
+        "YW50dGVjaC5jb20iLCJuYW1lIjoiYmFuZ3VtaXJlYWRlciJ9.TxP17zD0wri0ASFopd9NyjApYpVgsFC8Tw_TZxJJe-0"
+    );
+
     daoSetQueryLogPrinter(SqlLogPrinter);
     DbLoader::init(SqliteConfig(), new CustomDbExceptionHandler);
 
@@ -96,6 +108,10 @@ int main(int argc, char* argv[]) {
         a.exit();
     });
     systemTray.setContextMenu(&menu);
+
+    //crash test
+    //int* ptr = nullptr;
+    //*ptr = 1;
 
     return a.exec();
 }

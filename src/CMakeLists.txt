@@ -20,6 +20,14 @@ endif()
 set(qnetworkservice ${CMAKE_SOURCE_DIR}/3rdparty/qtnetworkservice/src)
 set(filewatcher ${CMAKE_SOURCE_DIR}/3rdparty/qtmintools/filewatcher)
 
+#设置breakpad库路径
+set(breakpad_path ${CMAKE_SOURCE_DIR}/3rdparty/bugreportclient/breakpad-bin)
+#设置breakpad库路径
+if(WIN32)
+    include(${breakpad_path}/lib/windows/client.cmake)
+    set(breakpad_client_target_lib ${breakpad_client_lib})
+endif()
+
 include_directories(${qnetworkservice})
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/entity/entity.cmake)
@@ -77,6 +85,11 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Quick
     Qt5::Network
     qtdao::lib
+
+    #添加bugreport库
+    bugreport::lib
+    #添加breakpad库
+    ${breakpad_client_target_lib}
 )
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
@@ -98,5 +111,9 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${PROJECT_NAME}> ${INSTALL_DIR}
         #执行windeployqt导出依赖库
         COMMAND ${QT5_WINDEPLOYQT_EXECUTABLE} --no-translations ${INSTALL_DIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}> -qmldir ${CMAKE_CURRENT_SOURCE_DIR}/ui
+        #拷贝符号文件
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_PDB_FILE:${PROJECT_NAME}> ${INSTALL_DIR}
+        #导出sym文件
+        COMMAND ${breakpad_path}/analyze_tool/dump_syms.exe ${INSTALL_DIR}/${PROJECT_NAME}.pdb > ${INSTALL_DIR}/${PROJECT_NAME}.sym
     )
 endif()
