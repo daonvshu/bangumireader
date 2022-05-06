@@ -31,7 +31,7 @@ Rectangle {
         font.pixelSize: 14
         font.bold: true
         color: "#BF9270"
-        text: "BangumiReader"
+        text: "BangumiReader " + appVersion
     }
 
     MouseArea {

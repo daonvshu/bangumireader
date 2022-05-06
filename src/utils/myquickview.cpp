@@ -14,6 +14,7 @@ MyQuickView::MyQuickView(QWindow* parent)
     setColor(Qt::transparent);
 
     rootContext()->setContextProperty("mainWindow", this);
+    rootContext()->setContextProperty("appVersion", APP_VERSION);
 
     auto rssReader = new MikanRssReader;
     rootContext()->setContextProperty("rssReader", rssReader);
