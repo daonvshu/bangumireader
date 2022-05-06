@@ -44,6 +44,8 @@ Rectangle {
             ButtonGroup {
                 id: seasonGroup
                 buttons: seasons.children
+                
+                property var currentSeasonIndex: getCurrentSeasonIndex()
 
                 onClicked: {
                     bangumiListModel.season = button.text
@@ -62,22 +64,25 @@ Rectangle {
 
                 RoundButton {
                     checkable: true
-                    checked: true
+                    checked: seasonGroup.currentSeasonIndex === 1
                     text: "春"
                 }
 
                 RoundButton {
                     checkable: true
+                    checked: seasonGroup.currentSeasonIndex === 2
                     text: "夏"
                 }
 
                 RoundButton {
                     checkable: true
+                    checked: seasonGroup.currentSeasonIndex === 3
                     text: "秋"
                 }
 
                 RoundButton {
                     checkable: true
+                    checked: seasonGroup.currentSeasonIndex === 0
                     text: "冬"
                 }
             }
@@ -113,5 +118,10 @@ Rectangle {
             years.push(i + "年")
         }
         return years
+    }
+
+    function getCurrentSeasonIndex() {
+        var nowMonth = (new Date()).getMonth()
+        return Math.floor(nowMonth / 3)
     }
 }
