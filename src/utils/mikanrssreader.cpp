@@ -9,6 +9,7 @@
 #include <qdebug.h>
 #include <qtimer.h>
 
+#include "textutil.h"
 #include "databasemodels/subscribemodel.h"
 #include "databasemodels/settingtbmodel.h"
 
@@ -28,6 +29,21 @@ QString MikanRssReader::rssLink(int bangumiId) {
     return BANGUMI_RSS_URL.arg(bangumiId);
 }
 
+void MikanRssReader::readRssContent(int bangumiId, const QObject* receiver, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler) {
+
+    static AeaQt::HttpClient client;
+    auto respond = client.get(rssLink(bangumiId)).exec();
+
+    connect(respond, QOverload<QByteArray>::of(&AeaQt::HttpResponse::error), receiver, [=] (const QByteArray& reason) {
+        qDebug() << reason;
+        groupDataHandler({});
+    });
+
+    connect(respond, QOverload<QByteArray>::of(&AeaQt::HttpResponse::finished), receiver, [=] (const QByteArray& data) {
+        parseRssContent(data, groupDataHandler);
+    });
+}
+
 void MikanRssReader::readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler, QEventLoop* loop) {
 
     const auto& onFailed = [=](const QByteArray& reason) {
@@ -40,28 +56,17 @@ void MikanRssReader::readRssContent(int bangumiId, const std::function<void(cons
     };
 
     const auto& onFinished = [=] {
-        if (loop != nullptr) {
-            loop->quit();
-        }
+        loop->quit();
     };
 
-    if (loop != nullptr) {
-        AeaQt::HttpClient client;
-        client.get(rssLink(bangumiId))
-            .onFailed(onFailed)
-            .onSuccess(onSuccess)
-            .onFinished(onFinished)
-            .exec();
+    AeaQt::HttpClient client;
+    client.get(rssLink(bangumiId))
+        .onFailed(onFailed)
+        .onSuccess(onSuccess)
+        .onFinished(onFinished)
+        .exec();
 
-        loop->exec();
-    } else {
-        static AeaQt::HttpClient client;
-        client.get(rssLink(bangumiId))
-            .onFailed(onFailed)
-            .onSuccess(onSuccess)
-            .onFinished(onFinished)
-            .exec();
-    }
+    loop->exec();
 }
 
 bool miKanTorrentLinkDataCompare(const MikanTorrentLinkData& left, const MikanTorrentLinkData& right) {
@@ -182,6 +187,11 @@ void MikanRssReader::run() {
 
             for (const auto& key: currentSubscribeData.keys()) {
 
+                auto subscribeGroup = SubScribeGroupsModel::getGroup(target.getBangumiId(), key);
+                if (subscribeGroup.getId() == -1) {
+                    continue;
+                }
+
                 auto currentGroupExistItems = SubScribeGroupsModel::getAllSubscribeGroupItems(target.getBangumiId(), key);
                 QSet<QString> existSourceLinkList;
                 for (const auto& item: currentGroupExistItems) {
@@ -189,19 +199,24 @@ void MikanRssReader::run() {
                 }
 
                 const auto& newSubscribeData = currentSubscribeData[key];
+                QList<MikanTorrentLinkData> filterData;
+                try {
+                    filterData = TextUtils::filterByKeywords<MikanTorrentLinkData>(subscribeGroup.getKeywords(), newSubscribeData, [&](const MikanTorrentLinkData& d) {
+                        return d.title;
+                    });
+                } catch (TextParseException&) {
+                    filterData = newSubscribeData;
+                }
                 QSet<QString> newSourceLinks;
-                for (const auto& data: newSubscribeData) {
+                for (const auto& data: filterData) {
                     if (!existSourceLinkList.contains(data.downloadUrl)) {
                         newSourceLinks.insert(data.downloadUrl);
                     }
                 }
-
+                auto newSourceData = newSourceLinks.values();
                 if (!newSourceLinks.isEmpty()) {
-                    int groupId = SubScribeGroupsModel::getGroup(target.getId(), key).getId();
-                    if (groupId != -1) {
-                        SubScribeGroupsModel::insertSubscribeGroupItems(groupId, newSourceLinks.values());
-                        newRssItems.insert(MikanNewRssItemInfo{ target.getTitle(), key, target.getId() });
-                    }
+                    SubScribeGroupsModel::insertSubscribeGroupItems(subscribeGroup.getId(), newSourceLinks.values());
+                    newRssItems.insert(MikanNewRssItemInfo{ target.getTitle(), key, target.getId() });
                 }
             }
         }

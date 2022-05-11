@@ -62,7 +62,15 @@ public:
 
     static QString rssLink(int bangumiId);
 
-    static void readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler, QEventLoop* loop = nullptr);
+    template<typename T>
+    static void readRssContent(int bangumiId, T* context, void(T::*groupDataHandler)(const QMap<QString, QList<MikanTorrentLinkData>>&)) {
+        readRssContent(bangumiId, context, [=] (const QMap<QString, QList<MikanTorrentLinkData>>& data) {
+            (context->*groupDataHandler)(data);
+        });
+    }
+    static void readRssContent(int bangumiId, const QObject* receiver, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler);
+
+    static void readRssContent(int bangumiId, const std::function<void(const QMap<QString, QList<MikanTorrentLinkData>>&)>& groupDataHandler, QEventLoop* loop);
 
 signals:
     void taskStop(QPrivateSignal);

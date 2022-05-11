@@ -90,6 +90,7 @@ private:
 
 private:
     void refreshTorrentLinks();
+    void solveRssContentData(const QMap<QString, QList<MikanTorrentLinkData>>& groupData);
     void selectDirectory(int dataRow);
     void downloadTargetTorrentLink(const QString& savePath, const QStringList& links);
     void reloadFilterLinkData();

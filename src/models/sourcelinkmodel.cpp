@@ -115,19 +115,21 @@ void SourceLinkModel::refreshTorrentLinks() {
     if (bangumiId == -1) {
         return;
     }
-    MikanRssReader::readRssContent(bangumiId, [&] (const QMap<QString, QList<MikanTorrentLinkData>>& groupData) {
-        beginResetModel();
-        linkData = groupData;
-        filterData.clear();
-        if (linkData.isEmpty()) {
-            endResetModel();
-            return;
-        }
-        groupName = linkData.keys().first();
-        selectedGroupNameChanged();
+    MikanRssReader::readRssContent(bangumiId, this, &SourceLinkModel::solveRssContentData);
+}
+
+void SourceLinkModel::solveRssContentData(const QMap<QString, QList<MikanTorrentLinkData>>& groupData) {
+    beginResetModel();
+    linkData = groupData;
+    filterData.clear();
+    if (linkData.isEmpty()) {
         endResetModel();
-        groupNamesChanged();
-    });
+        return;
+    }
+    groupName = linkData.keys().first();
+    selectedGroupNameChanged();
+    endResetModel();
+    groupNamesChanged();
 }
 
 void SourceLinkModel::selectDirectory(int dataRow) {

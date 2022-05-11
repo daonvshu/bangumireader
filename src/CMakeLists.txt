@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8)
 
-project ("bangumireader" VERSION 1.0.0)
+project ("bangumireader" VERSION 1.0.1)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -104,6 +104,9 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
 
     message("install dir: ${INSTALL_DIR}")
 
+    file(GLOB OpenSslRuntime ${CMAKE_SOURCE_DIR}/openssl/*.dll)
+    message("openssl runtime: ${OpenSslRuntime}")
+
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         #创建输出文件夹
         COMMAND ${CMAKE_COMMAND} -E make_directory ${INSTALL_DIR}
@@ -115,5 +118,7 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_PDB_FILE:${PROJECT_NAME}> ${INSTALL_DIR}
         #导出sym文件
         COMMAND ${breakpad_path}/analyze_tool/dump_syms.exe ${INSTALL_DIR}/${PROJECT_NAME}.pdb > ${INSTALL_DIR}/${PROJECT_NAME}.sym
+        #复制openssl
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${OpenSslRuntime} ${INSTALL_DIR}
     )
 endif()
