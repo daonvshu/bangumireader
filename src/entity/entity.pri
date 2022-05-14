@@ -9,5 +9,6 @@ HEADERS += ./SettingTb.h \
     ./SubscribeGroups.h \
     ./SubscribeGroupItem.h \
     ./BangumiDatabase.h \
+    ./SavePathCache.h \
     ./SqliteEntityInclude.h
 SOURCES += ./SqliteEntityInclude.cpp

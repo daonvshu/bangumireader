@@ -96,4 +96,5 @@ private:
     void reloadFilterLinkData();
     void selectedGroupNameChanged();
     void removeNewStatus(int row);
+    void getSavedDirectory(const std::function<void(const QString&)>& callback) const;
 };

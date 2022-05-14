@@ -76,6 +76,8 @@ add_executable (${PROJECT_NAME} WIN32
     databasemodels/subscribemodel.cpp
     databasemodels/bangumidatamodel.h
     databasemodels/bangumidatamodel.cpp
+    databasemodels/savepathcachemodel.h
+    databasemodels/savepathcachemodel.cpp
 
     ${UI_RESOURCES}
 )

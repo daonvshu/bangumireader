@@ -22,4 +22,5 @@ public:
 
     static SubscribeTbList getAllSubscribeTarget();
     static SubscribeTbList getAllSubscribeInfo();
+    static QString getSubscribeTargetTitle(int bangumiId);
 };

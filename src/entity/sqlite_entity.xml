@@ -35,4 +35,9 @@
     <item name="sites" type="text" note="放送网站"/>
     <item name="star" type="int" note="标记"/>
   </tb>
+  <tb name="SavePathCache">
+    <item name="bangumiId" type="int" constraints="unique" note="番剧id"/>
+    <item name="savePath" type="text" note="保存的文件路径"/>
+    <item name="createTime" type="long" note="缓存路径时间"/>
+  </tb>
 </dao>

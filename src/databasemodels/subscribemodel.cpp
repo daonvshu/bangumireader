@@ -119,3 +119,8 @@ SubscribeTbList SubScribeGroupsModel::getAllSubscribeInfo() {
     }
     return results;
 }
+
+QString SubScribeGroupsModel::getSubscribeTargetTitle(int bangumiId) {
+    SubscribeTb::Fields stf;
+    return dao::_select<SubscribeTb>().filter(stf.bangumiId == bangumiId).build().one().getTitle();
+}

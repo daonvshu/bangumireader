@@ -9,9 +9,9 @@
 #include <ShlObj.h>
 
 #include "ConnectionPool.h"
-#include "databasemodels/settingtbmodel.h"
 #include "databasemodels/remarktbmodel.h"
 #include "databasemodels/subscribemodel.h"
+#include "databasemodels/savepathcachemodel.h"
 
 #include "utils/textutil.h"
 
@@ -105,11 +105,9 @@ void SourceLinkModel::downloadSelectedRowLinks() {
     }
     if (links.isEmpty()) return;
 
-    auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("选择保存路径"), SettingTbModel::getLastSaveDirectory());
-    if (!savePath.isEmpty()) {
-        SettingTbModel::updateSaveDirectory(savePath);
+    getSavedDirectory([=] (const QString& savePath) {
         downloadTargetTorrentLink(savePath, links);
-    }
+    });
 }
 
 void SourceLinkModel::refreshTorrentLinks() {
@@ -134,12 +132,10 @@ void SourceLinkModel::solveRssContentData(const QMap<QString, QList<MikanTorrent
 }
 
 void SourceLinkModel::selectDirectory(int dataRow) {
-    auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("选择保存路径"), SettingTbModel::getLastSaveDirectory());
-    if (!savePath.isEmpty()) {
-        SettingTbModel::updateSaveDirectory(savePath);
+    getSavedDirectory([&, dataRow] (const QString& savePath) {
         downloadTargetTorrentLink(savePath, { filterData[dataRow].downloadUrl });
         removeNewStatus(dataRow);
-    }
+    });
 }
 
 int SourceLinkModel::groupSize(const QString& groupName) const {
@@ -349,4 +345,22 @@ void SourceLinkModel::selectedGroupNameChanged() {
 
 void SourceLinkModel::removeNewStatus(int row) {
     SubScribeGroupsModel::removeSubscribeGroupItemNewStatus(filterData[row].downloadUrl);
+}
+
+void SourceLinkModel::getSavedDirectory(const std::function<void(const QString&)>& callback) const {
+    auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("选择保存路径"), SavePathCacheModel::getLastSaveDirectory(bangumiId));
+    if (!savePath.isEmpty()) {
+        QDir saveDir(savePath);
+        auto currentBangumiTitle = SubScribeGroupsModel::getSubscribeTargetTitle(bangumiId);
+        auto validTitle = currentBangumiTitle.remove(QRegExp("[<>:\"/\\\\\\|\\?\\*]"));
+        if (saveDir.dirName() != validTitle) {
+            if (saveDir.mkpath(savePath + "/" + validTitle)) {
+                saveDir.cd(validTitle);
+                savePath = saveDir.absolutePath();
+            }
+        }
+
+        SavePathCacheModel::updateSaveDirectory(bangumiId, savePath);
+        callback(savePath);
+    }
 }
