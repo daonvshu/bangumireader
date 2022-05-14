@@ -6,6 +6,7 @@
 #include <qfiledialog.h>
 #include <qeventloop.h>
 #include <QtConcurrent/QtConcurrent>
+#include <ShlObj.h>
 
 #include "ConnectionPool.h"
 #include "databasemodels/settingtbmodel.h"
@@ -176,7 +177,7 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
         std::function<void(const QString& link)> downloadTask;
         std::function<void()> doFinished;
 
-        QString lastFilePath;
+        QStringList downloadedFiles;
 
         downloadNext = [&] {
             if (!prepareLinks.isEmpty()) {
@@ -194,9 +195,10 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
         downloadTask = [&] (const QString& link) {
             count++;
 
-            lastFilePath = savePath + link.mid(link.lastIndexOf("/"));
+            auto lastFilePath = savePath + link.mid(link.lastIndexOf("/"));
             QFile file(lastFilePath);
             if (file.exists()) {
+                downloadedFiles << lastFilePath;
                 count--;
                 downloadNext();
                 return;
@@ -205,8 +207,9 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
             static AeaQt::HttpClient client;
             client.get(link)
                 .download(lastFilePath)
-                .onDownloadFileSuccess([=](QString filePath) {
+                .onDownloadFileSuccess([&, link](QString filePath) {
                 qDebug() << "download:" << link << "success!";
+                downloadedFiles << filePath;
             })
                 .onDownloadFileFailed([=](QString error) {
                 qDebug() << "download:" << link << "fail!" << error;
@@ -228,8 +231,18 @@ void SourceLinkModel::downloadTargetTorrentLink(const QString& savePath, const Q
             loop.exec();
         }
 
-        lastFilePath.replace("/", "\\");
-        QProcess::execute("explorer /select, \"" + lastFilePath + "\"");
+        if (!downloadedFiles.isEmpty()) {
+            int fileCount = downloadedFiles.size();
+            ITEMIDLIST** fileItems = new ITEMIDLIST * [fileCount];
+            for (int p = 0; p < fileCount; p++) {
+                auto path = downloadedFiles[p].replace("/", "\\");
+                fileItems[p] = ILCreateFromPathW(path.toStdWString().c_str());
+            }
+            auto savePathRel = savePath;
+            savePathRel.replace("/", "\\");
+            SHOpenFolderAndSelectItems(ILCreateFromPathW(savePathRel.toStdWString().c_str()), fileCount, (LPCITEMIDLIST*)fileItems, 0);
+            delete[] fileItems;
+        }
 
         qDebug() << "download links task finished!";
         downloading = false;
