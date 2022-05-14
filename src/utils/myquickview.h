@@ -8,11 +8,19 @@ class MyQuickView : public QQuickView {
 public:
     explicit MyQuickView(QWindow* parent = nullptr);
 
-    void reloadSource();
+    static void create();
+    static void currentViewReload();
+    static void loadRssTarget(int id, QString title);
 
 signals:
     void prepareToHide();
 
 protected:
-    bool event(QEvent* e) override;
+    bool event(QEvent* event) override;
+
+private:
+    static MyQuickView* holdView;
+
+private:
+    void reloadSource();
 };

@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8)
 
-project ("bangumireader" VERSION 1.0.1)
+project ("bangumireader" VERSION 1.0.2)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -57,6 +57,8 @@ add_executable (${PROJECT_NAME} WIN32
     utils/versionchecker.cpp
     utils/myquickview.h
     utils/myquickview.cpp
+    utils/rssnotifyview.h
+    utils/rssnotifyview.cpp
 
     ${filewatcher}/filewatcher.h
     ${filewatcher}/filewatcher.cpp

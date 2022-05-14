@@ -20,5 +20,6 @@
         <file>ui/widgets/KeywordNotice.qml</file>
         <file>ui/widgets/RoundButton.qml</file>
         <file>ui/widgets/RoundComboBox.qml</file>
+        <file>ui/rssnotify.qml</file>
     </qresource>
 </RCC>

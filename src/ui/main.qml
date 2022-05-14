@@ -148,33 +148,6 @@ Item {
         id: settingDialog
     }
 
-    PromptDialog {
-        id: promptDialog
-
-        onLinkClicked: {
-            mainWindow.show()
-            console.log("link clicked:" + id)
-            if (stackview.currentItem.objectName != "sourcelinkpage") {
-                stackview.push(sourcelinkpage, {
-                    "loadTargetBangumiId": id,
-                    "title": title
-                })
-            } else {
-                stackview.currentItem.loadTargetBangumiId = id
-                stackview.currentItem.title = title
-            }
-        }
-    }
-
-    Connections {
-        target: rssReader
-
-        function onNewRssItemFound(args) {
-            promptDialog.links = args
-            promptDialog.show()
-        }
-    }
-
     VersionChecker {
         id: versionChecker
     }
@@ -219,6 +192,19 @@ Item {
         background: Rectangle {
             radius: 6
             color: "#FFEDDB"
+        }
+    }
+
+    function loadRssTarget(id, title) {
+        console.log("link clicked:" + id)
+        if (stackview.currentItem.objectName != "sourcelinkpage") {
+            stackview.push(sourcelinkpage, {
+                "loadTargetBangumiId": id,
+                "title": title
+            })
+        } else {
+            stackview.currentItem.loadTargetBangumiId = id
+            stackview.currentItem.title = title
         }
     }
 }

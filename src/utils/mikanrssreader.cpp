@@ -221,6 +221,7 @@ void MikanRssReader::run() {
             }
         }
 
+        //newRssItems << MikanNewRssItemInfo{ "test title", "test group", 0 };
         if (!newRssItems.isEmpty()) {
             qDebug() << "find new Rss items:";
             for (const auto& item: newRssItems) {

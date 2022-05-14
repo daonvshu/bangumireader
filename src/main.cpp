@@ -22,6 +22,8 @@
 
 #include "utils/versionchecker.h"
 #include "utils/myquickview.h"
+#include "utils/mikanrssreader.h"
+#include "utils/rssnotifyview.h"
 
 #include "crashlistener.h"
 #include "log.h"
@@ -57,11 +59,27 @@ void SqlLogPrinter(const QString& sql, const QVariantList& values) {
 #endif
 }
 
+template<typename... T> struct TypeRegister;
+template<typename K, typename... T>
+struct TypeRegister<K, T...> {
+    static void reg() {
+        const auto* typeName = typename K::staticMetaObject.className();
+        qmlRegisterType<K>(typeName, 0, 1, typeName);
+        TypeRegister<T...>::reg();
+    }
+};
+template<>
+struct TypeRegister<> {
+    static void reg() {}
+};
+
+
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
 
     a.setFont(QFont("Microsoft YaHei UI"));
     a.setWindowIcon(QIcon(":/resource/logo.png"));
+    a.setQuitOnLastWindowClosed(false);
 
     //日志输出到控制台
     Log::useQDebugOnly();
@@ -75,38 +93,39 @@ int main(int argc, char* argv[]) {
     daoSetQueryLogPrinter(SqlLogPrinter);
     DbLoader::init(SqliteConfig(), new CustomDbExceptionHandler);
 
-    qmlRegisterType<BangumiListModel>("BangumiListModel", 0, 1, "BangumiListModel");
-    qmlRegisterType<SourceLinkModel>("SourceLinkModel", 0, 1, "SourceLinkModel");
-    qmlRegisterType<QmlSettingDialog>("QmlSettingDialog", 0, 1, "QmlSettingDialog");
-    qmlRegisterType<RssSubscribeModel>("RssSubscribeModel", 0, 1, "RssSubscribeModel");
-    qmlRegisterType<BangumiDatabaseListModel>("BangumiDatabaseListModel", 0, 1, "BangumiDatabaseListModel");
-    qmlRegisterType<BangumiDetailModel>("BangumiDetailModel", 0, 1, "BangumiDetailModel");
-    qmlRegisterType<VersionChecker>("VersionChecker", 0, 1, "VersionChecker");
+    TypeRegister<
+        BangumiListModel, SourceLinkModel, QmlSettingDialog, RssSubscribeModel,
+        BangumiDatabaseListModel, BangumiDetailModel, VersionChecker
+    >::reg();
     QmlSettingDialog::writeAutoStartDefault();
 
-    MyQuickView view;
-    view.show();
-
+    MyQuickView::create();
 #ifdef QT_DEBUG
     FileWatcher fileWatcher([&](const QString&) {
-        view.reloadSource();
+        MyQuickView::currentViewReload();
     });
     fileWatcher.setDirectory(PROJECT_UI_PATH, "qml");
 #endif
+
+    auto rssReader = new MikanRssReader;
+    rssReader->start();
+    QObject::connect(rssReader, &MikanRssReader::newRssItemFound, &a, [&] (const QList<MikanNewRssItemInfo>& info) {
+        RssNotifyView::showView(info);
+    });
 
     QSystemTrayIcon systemTray(QIcon(":/resource/logo.png"));
     systemTray.show();
     QObject::connect(&systemTray, &QSystemTrayIcon::activated, [&] (QSystemTrayIcon::ActivationReason reason) {
         if (reason == QSystemTrayIcon::DoubleClick) {
-            view.show();
+            MyQuickView::create();
         }
     });
 
     QMenu menu;
-    menu.addAction(QIcon(":/resource/ic_home.png"), QStringLiteral("主页"), &view, &QQuickView::show);
-    menu.addAction(QIcon(":/resource/ic_remove.png"), QStringLiteral("退出"),  [&] {
-        a.exit();
+    menu.addAction(QIcon(":/resource/ic_home.png"), QStringLiteral("主页"), [&] {
+        MyQuickView::create();
     });
+    menu.addAction(QIcon(":/resource/ic_remove.png"), QStringLiteral("退出"),  &a, &QApplication::exit);
     systemTray.setContextMenu(&menu);
 
     //crash test

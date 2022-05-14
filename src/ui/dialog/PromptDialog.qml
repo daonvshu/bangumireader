@@ -78,8 +78,8 @@ Window {
                         onExited: titleText.hovered = false
                         onClicked: {
                             linkClicked(modelData.id, modelData.title)
-                            hovered = false
-                            root.close()
+                            //hovered = false
+                            //root.close()
                         }
                     }
                 }
@@ -98,6 +98,6 @@ Window {
     Timer {
         interval: 10000
         running: visible
-        onTriggered: root.close()
+        onTriggered: mainView.close()
     }
 }

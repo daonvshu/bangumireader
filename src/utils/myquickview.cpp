@@ -5,7 +5,7 @@
 #include <qqmlcontext.h>
 #include <qevent.h>
 
-#include "mikanrssreader.h"
+MyQuickView* MyQuickView::holdView = nullptr;
 
 MyQuickView::MyQuickView(QWindow* parent)
     : QQuickView(parent)
@@ -16,13 +16,40 @@ MyQuickView::MyQuickView(QWindow* parent)
     rootContext()->setContextProperty("mainWindow", this);
     rootContext()->setContextProperty("appVersion", APP_VERSION);
 
-    auto rssReader = new MikanRssReader;
-    rootContext()->setContextProperty("rssReader", rssReader);
-    rssReader->start();
-
-    connect(this, &MyQuickView::prepareToHide, this, &QQuickView::hide, Qt::QueuedConnection);
+    connect(this, &MyQuickView::prepareToHide, this, &QQuickView::close, Qt::QueuedConnection);
 
     reloadSource();
+}
+
+void MyQuickView::create() {
+    if (holdView != nullptr) {
+        holdView->requestActivate();
+        return;
+    }
+    holdView = new MyQuickView;
+    holdView->show();
+}
+
+void MyQuickView::currentViewReload() {
+    if (holdView == nullptr) {
+        return;
+    }
+    holdView->reloadSource();
+}
+
+void MyQuickView::loadRssTarget(int id, QString title) {
+    if (holdView == nullptr) {
+        create();
+    }
+    QMetaObject::invokeMethod((QObject*)holdView->rootObject(), "loadRssTarget", Q_ARG(QVariant, QVariant(id)), Q_ARG(QVariant, QVariant(title)));
+}
+
+bool MyQuickView::event(QEvent* e) {
+    if (e->type() == QEvent::Close) {
+        holdView->deleteLater();
+        holdView = nullptr;
+    }
+    return QQuickView::event(e);
 }
 
 void MyQuickView::reloadSource() {
@@ -34,29 +61,4 @@ void MyQuickView::reloadSource() {
 #else
     setSource(QUrl("qrc:/ui/main.qml"));
 #endif
-}
-
-bool MyQuickView::event(QEvent* e) {
-    if (e->type() == QEvent::Close) {
-        hide();
-        e->ignore();
-        return true;
-    }
-    if (e->type() == QEvent::Hide) {
-        setSource(QUrl());
-        engine()->clearComponentCache();
-        releaseResources();
-        return true;
-    }
-    if (e->type() == QEvent::Show) {
-        static bool firstShow = true;
-        if (firstShow) { //ignore first load
-            firstShow = false;
-        } else {
-            reloadSource();
-            raise();
-            return true;
-        }
-    }
-    return QQuickView::event(e);
 }
