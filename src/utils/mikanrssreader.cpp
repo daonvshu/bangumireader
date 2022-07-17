@@ -172,8 +172,8 @@ void MikanRssReader::run() {
     syncWaitTimer->setSingleShot(true);
     connect(syncWaitTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
 
-    //syncWaitTimer->start(20000); //wait 20s when application start
-    //loop.exec();
+    syncWaitTimer->start(20000); //wait 20s when application start
+    loop.exec();
 
     while (isRunning) {
 

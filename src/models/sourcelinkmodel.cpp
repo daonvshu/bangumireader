@@ -318,7 +318,8 @@ void SourceLinkModel::saveSubscribe(const QString& title, const QString& keyword
     emit dataChanged(index(0), index(filterData.size() - 1), { RoleNewStatus });
 
     existSubscribeGroups.insert(data.getGroupName());
-    emit groupSubscribedChanged();
+    groupSubscribedChanged();
+    groupNamesChanged();
 }
 
 void SourceLinkModel::removeSubscribe(const QVariant& group) {
@@ -332,7 +333,8 @@ void SourceLinkModel::removeSubscribe(const QVariant& group) {
     emit dataChanged(index(0), index(filterData.size() - 1), { RoleNewStatus });
 
     existSubscribeGroups.remove(data.getGroupName());
-    emit groupSubscribedChanged();
+    groupSubscribedChanged();
+    groupNamesChanged();
 }
 
 void SourceLinkModel::reloadFilterLinkData() {

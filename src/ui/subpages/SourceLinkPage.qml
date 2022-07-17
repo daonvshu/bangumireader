@@ -25,6 +25,10 @@ Rectangle {
         id: sourceLinkModel
         bangumiId: loadTargetBangumiId
         bangumiTitle: title
+
+        property int groupNamesUpdateChangeSize: 0
+
+        onGroupNamesChanged: groupNamesUpdateChangeSize++
     }
 
     ColumnLayout {
@@ -80,7 +84,7 @@ Rectangle {
                         spacing: 4
 
                         Image {
-                            visible: sourceLinkModel.isGroupSubscribed(contentText.text)
+                            visible: sourceLinkModel.groupNamesUpdateChangeSize, sourceLinkModel.isGroupSubscribed(modelData)
                             anchors.verticalCenter: parent.verticalCenter
                             sourceSize.width: 12
                             source: "qrc:/resource/ic_star.png"
@@ -136,6 +140,8 @@ Rectangle {
                 model: sourceLinkModel
                 clip: true
 
+                property var currentSubscribed: sourceLinkModel.groupSubscribed
+
                 populate: Transition {
                     NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 250 }
                 }
@@ -187,7 +193,7 @@ Rectangle {
                             Layout.alignment: Qt.AlignVCenter
 
                             source: "qrc:/resource/ic_new.png"
-                            visible: sourceLinkModel.groupSubscribed && newStatus
+                            visible: bangumiLinkUrlList.currentSubscribed && newStatus
                         }
 
                         IconBtn {
