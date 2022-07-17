@@ -9,7 +9,7 @@
 RssNotifyView::RssNotifyView(const QList<MikanNewRssItemInfo>& info, QWindow* parent)
     : QQuickView(parent)
 {
-    setFlags(Qt::Popup | Qt::FramelessWindowHint);
+    setFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
     setColor(Qt::transparent);
 
     rootContext()->setContextProperty("dataLinks", QVariant::fromValue(info));

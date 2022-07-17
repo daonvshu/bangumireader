@@ -38,6 +38,16 @@ void SubScribeGroupsModel::removeSubscribeGroup(const SubscribeGroups& subscribe
     }
 }
 
+QStringList SubScribeGroupsModel::getSubscribedGroups(int bangumiId) {
+    SubscribeGroups::Fields sf;
+    auto data = dao::_select<SubscribeGroups>().column(sf.groupName).filter(sf.bangumiId == bangumiId).build().list();
+    QStringList groups;
+    for (const auto& d : data) {
+        groups << d.getGroupName();
+    }
+    return groups;
+}
+
 void SubScribeGroupsModel::insertSubscribeGroupItems(int groupId, const QStringList& links) {
     SubscribeGroupItem::Fields sif;
     QList<int> groups;

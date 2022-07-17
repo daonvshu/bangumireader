@@ -47,6 +47,14 @@ void SourceLinkModel::setFilterKeywords(const QString& keywords) {
     endResetModel();
 }
 
+bool SourceLinkModel::isGroupSubscribed() const {
+    return isGroupSubscribed(groupName);
+}
+
+bool SourceLinkModel::isGroupSubscribed(const QString& tagGroupName) const {
+    return existSubscribeGroups.contains(tagGroupName);
+}
+
 int SourceLinkModel::rowCount(const QModelIndex& parent) const {
     return filterData.size();
 }
@@ -120,6 +128,13 @@ void SourceLinkModel::refreshTorrentLinks() {
 void SourceLinkModel::solveRssContentData(const QMap<QString, QList<MikanTorrentLinkData>>& groupData) {
     beginResetModel();
     linkData = groupData;
+
+    auto groups = SubScribeGroupsModel::getSubscribedGroups(bangumiId);
+    existSubscribeGroups.clear();
+    for (const auto& g : groups) {
+        existSubscribeGroups.insert(g);
+    }
+
     filterData.clear();
     if (linkData.isEmpty()) {
         endResetModel();
@@ -302,10 +317,8 @@ void SourceLinkModel::saveSubscribe(const QString& title, const QString& keyword
     SubScribeGroupsModel::insertSubscribeGroupItems(data.getId(), torrentLinks);
     emit dataChanged(index(0), index(filterData.size() - 1), { RoleNewStatus });
 
-    if (!groupSubscribed) {
-        groupSubscribed = true;
-        emit groupSubscribedChanged();
-    }
+    existSubscribeGroups.insert(data.getGroupName());
+    emit groupSubscribedChanged();
 }
 
 void SourceLinkModel::removeSubscribe(const QVariant& group) {
@@ -318,7 +331,7 @@ void SourceLinkModel::removeSubscribe(const QVariant& group) {
     SubScribeGroupsModel::removeSubscribeGroupItems(data.getId());
     emit dataChanged(index(0), index(filterData.size() - 1), { RoleNewStatus });
 
-    groupSubscribed = false;
+    existSubscribeGroups.remove(data.getGroupName());
     emit groupSubscribedChanged();
 }
 
@@ -339,7 +352,6 @@ void SourceLinkModel::selectedGroupNameChanged() {
     checkStatus.resize(filterData.size());
     checkStatus.fill(false);
 
-    groupSubscribed = SubScribeGroupsModel::getGroup(bangumiId, groupName).getId() != -1;
     emit groupSubscribedChanged();
 }
 
@@ -351,7 +363,7 @@ void SourceLinkModel::getSavedDirectory(const std::function<void(const QString&)
     auto savePath = QFileDialog::getExistingDirectory(nullptr, QStringLiteral("Ñ¡Ôñ±£´æÂ·¾¶"), SavePathCacheModel::getLastSaveDirectory(bangumiId));
     if (!savePath.isEmpty()) {
         QDir saveDir(savePath);
-        auto currentBangumiTitle = SubScribeGroupsModel::getSubscribeTargetTitle(bangumiId);
+        auto currentBangumiTitle = bangumiTitle;
         auto validTitle = currentBangumiTitle.remove(QRegExp("[<>:\"/\\\\\\|\\?\\*]"));
         if (saveDir.dirName() != validTitle) {
             if (saveDir.mkpath(savePath + "/" + validTitle)) {

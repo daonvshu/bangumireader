@@ -172,6 +172,9 @@ void MikanRssReader::run() {
     syncWaitTimer->setSingleShot(true);
     connect(syncWaitTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
 
+    //syncWaitTimer->start(20000); //wait 20s when application start
+    //loop.exec();
+
     while (isRunning) {
 
         QSet<MikanNewRssItemInfo> newRssItems;
@@ -216,12 +219,12 @@ void MikanRssReader::run() {
                 auto newSourceData = newSourceLinks.values();
                 if (!newSourceLinks.isEmpty()) {
                     SubScribeGroupsModel::insertSubscribeGroupItems(subscribeGroup.getId(), newSourceLinks.values());
-                    newRssItems.insert(MikanNewRssItemInfo{ target.getTitle(), key, target.getId() });
+                    newRssItems.insert(MikanNewRssItemInfo{ target.getTitle(), key, target.getBangumiId() });
                 }
             }
         }
 
-        //newRssItems << MikanNewRssItemInfo{ "test title", "test group", 0 };
+        //newRssItems << MikanNewRssItemInfo{ QStringLiteral("史上最强的大魔王转生为村民A"), "ANi", 2695 };
         if (!newRssItems.isEmpty()) {
             qDebug() << "find new Rss items:";
             for (const auto& item: newRssItems) {

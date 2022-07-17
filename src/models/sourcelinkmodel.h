@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <qset.h>
 
 #include "utils/mikanrssreader.h"
 
@@ -9,6 +10,7 @@ class SourceLinkModel : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(int bangumiId READ getBangumiId WRITE setBangumiId)
+    Q_PROPERTY(QString bangumiTitle MEMBER bangumiTitle)
     Q_PROPERTY(QString groupName READ getGroupName WRITE setGroupName)
     Q_PROPERTY(QStringList groupNames READ getGroupNames NOTIFY groupNamesChanged)
     Q_PROPERTY(bool downloading READ getDownloadingStatus NOTIFY downloadStatusChanged)
@@ -50,9 +52,9 @@ public:
 
     void setFilterKeywords(const QString& keywords);
 
-    bool isGroupSubscribed() const {
-        return groupSubscribed;
-    }
+    bool isGroupSubscribed() const;
+
+    Q_INVOKABLE bool isGroupSubscribed(const QString& tagGroupName) const;
 
     Q_INVOKABLE int groupSize(const QString& groupName) const;
     Q_INVOKABLE void selectAllItems();
@@ -71,12 +73,13 @@ signals:
 
 private:
     int bangumiId = -1;
+    QString bangumiTitle;
     QString groupName;
     bool downloading = false;
     QString filterKeywords;
-    bool groupSubscribed = false;
 
     QMap<QString, QList<MikanTorrentLinkData>> linkData;
+    QSet<QString> existSubscribeGroups;
     QList<MikanTorrentLinkData> filterData;
     QVector<bool> checkStatus;
 

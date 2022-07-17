@@ -11,6 +11,7 @@ public:
     static SubscribeGroups getGroup(int bangumiId, const QString& groupName);
     static void updateSubscribeGroup(SubscribeGroups& subscribeGroup);
     static void removeSubscribeGroup(const SubscribeGroups& subscribeGroup);
+    static QStringList getSubscribedGroups(int bangumiId);
 
     static void insertSubscribeGroupItems(int groupId, const QStringList& links);
     static void removeSubscribeGroupItems(int groupId);

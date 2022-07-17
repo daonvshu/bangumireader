@@ -24,6 +24,7 @@ Rectangle {
     SourceLinkModel{
         id: sourceLinkModel
         bangumiId: loadTargetBangumiId
+        bangumiTitle: title
     }
 
     ColumnLayout {
@@ -77,6 +78,13 @@ Rectangle {
 
                     contentItem: Row {
                         spacing: 4
+
+                        Image {
+                            visible: sourceLinkModel.isGroupSubscribed(contentText.text)
+                            anchors.verticalCenter: parent.verticalCenter
+                            sourceSize.width: 12
+                            source: "qrc:/resource/ic_star.png"
+                        }
 
                         Text {
                             id: contentText
